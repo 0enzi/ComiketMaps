@@ -200,18 +200,18 @@ export const usePIXI = (activeImage, activeDay, markerData, onMarkerClick) => {
         }
 
         const imageUrls = {
-        "Day 1": [
+          "Day 1": [
             "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902099/image1_t4hsjw.png",
             "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902099/image2_uqsi37.png",
             "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902099/image3_onc2fl.png",
-            "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902100/image4_l2oysh.png"
-        ],
-        "Day 2": [
+            "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902100/image4_l2oysh.png",
+          ],
+          "Day 2": [
             "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902099/image1_t4hsjw.png",
             "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902099/image2_uqsi37.png",
             "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902099/image3_onc2fl.png",
-            "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902100/image4_l2oysh.png"
-        ]
+            "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902100/image4_l2oysh.png",
+          ],
         };
         const imageUrl = imageUrls[day]?.[imageIndex];
 
@@ -385,10 +385,7 @@ export const usePIXI = (activeImage, activeDay, markerData, onMarkerClick) => {
           const roundedY = Math.round(imageY);
 
           console.log("══════════════════════════════════════════════════");
-          console.log("🎯 CLICK COORDINATES (TOP-LEFT RELATIVE):");
-          console.log(`x: ${roundedX}, y: ${roundedY}`);
-          console.log("");
-          console.log("📋 Copy this for markerData.js:");
+          console.log("COORDINATES");
           console.log(`x: ${roundedX},`);
           console.log(`y: ${roundedY},`);
           console.log("══════════════════════════════════════════════════");
@@ -402,8 +399,6 @@ export const usePIXI = (activeImage, activeDay, markerData, onMarkerClick) => {
 
       initializedRef.current = true;
       console.log("✓ PIXI initialization complete");
-      console.log("🎯 Coordinate debug enabled!");
-      console.log("👉 Click to get formatted coordinates for markerData.js");
 
       await loadImage(activeImage, activeDay, false);
     } catch (error) {

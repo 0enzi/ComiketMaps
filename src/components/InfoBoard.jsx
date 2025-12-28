@@ -363,7 +363,7 @@ const InfoBoard = ({
             }}
           ></div>
           <h4 style={{ color: "white", fontSize: "20px", margin: "10px 0" }}>
-            Map {activeImage + 1} - {currentInfo.title}
+            Map {activeImage + 1} 
           </h4>
           <div
             style={{ color: "#aaa", fontSize: "14px", marginBottom: "20px" }}
