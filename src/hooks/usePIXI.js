@@ -199,7 +199,7 @@ export const usePIXI = (activeImage, activeDay, markerData, onMarkerClick) => {
           console.log(`Removed ${childrenToRemove.length} stray objects`);
         }
 
-        const imageUrl = `/images/image${imageIndex + 1}.png`;
+        const imageUrl = `src/images/image${imageIndex + 1}.png`;
         console.log(`Loading image from: ${imageUrl}`);
 
         let texture;
