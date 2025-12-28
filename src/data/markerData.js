@@ -1,68 +1,190 @@
 export const markerData = {
-  'Day 1': {
-    0: [ 
+  "Day 1": {
+    0: [
       {
-        id: 'ogipote',
+        id: "ogipote",
         x: 539,
         y: 131,
-        booth_no: '64',
-        type: 'booth',
-        title: '荻pote@1日目東ア-64ab',
-        handle: '@ogipote',
-        description: '米の県出身イラストレーター。萩× 荻〇 ”おぎ”ぽて。メディア欄整理のためのツイ消しをお許し下さい。無断転載、編集、AI学習×。業務連絡は下記HPかpixivメッセージよりお問い合わせ下さい。',
-        banner: 'https://pbs.twimg.com/profile_banners/252475597/1499024883/1500x500',
-        pfp: 'https://pbs.twimg.com/profile_images/805115505539301376/pjcUhOnE_400x400.jpg',
-        booth: '1日目東ア-64ab',
-        day: 'Day 1'
+        booth_no: "64",
+        type: "booth",
+        title: "荻pote@1日目東ア-64ab",
+        handle: "@ogipote",
+        description: "米の県出身イラストレーター。萩× 荻〇 ”おぎ”ぽて。メディア欄整理のためのツイ消しをお許し下さい。無断転載、編集、AI学習×。業務連絡は下記HPかpixivメッセージよりお問い合わせ下さい。",
+        banner: "https://pbs.twimg.com/profile_banners/252475597/1499024883/1500x500",
+        pfp: "https://pbs.twimg.com/profile_images/805115505539301376/pjcUhOnE_400x400.jpg",
+        booth: "1日目東ア-64ab",
+        day: "Day 1",
       },
+    ],
+    1: [
+     
+      
+    ],
+    2: [
     
-     
     ],
-    1: [ 
-     
-    ],
-    2: [], 
-    3: [ {
-        id: 'kaguramea',
+    3: [
+      {
+        id: "kaguramea",
         x: 363,
         y: 63,
-        booth_no: '47', 
-        type: 'booth',
-        title: '🍥神楽めあ/KaguraMea🍥 C107 火曜西め-47ab',
-        handle: '@KaguraMea_VoV',
-        description: '│✏️お仕事依頼はこちらへ▷info(@kagura_mea_info)\n│≪新ビジュアル≫🎨@jimmy_madomagi 🔧@rariemonn765',
-        banner: 'https://pbs.twimg.com/profile_banners/1130858667547299841/1706583843/1500x500',
-        pfp: 'https://pbs.twimg.com/profile_images/1898805913320116224/vlZ-R43X_400x400.jpg',
-        booth: 'C107 火曜西め-47ab',
-        day: 'Day 1'
+        booth_no: "47",
+        type: "booth",
+        title: "🍥神楽めあ/KaguraMea🍥 C107 火曜西め-47ab",
+        handle: "@KaguraMea_VoV",
+        description: "│✏️お仕事依頼はこちらへ▷info(@kagura_mea_info)\n│≪新ビジュアル≫🎨@jimmy_madomagi 🔧@rariemonn765",
+        banner: "https://pbs.twimg.com/profile_banners/1130858667547299841/1706583843/1500x500",
+        pfp: "https://pbs.twimg.com/profile_images/1898805913320116224/vlZ-R43X_400x400.jpg",
+        booth: "C107 火曜西め-47ab",
+        day: "Day 1",
       },
-     
-    ] 
+       {
+        id: "0725akaba",
+        x: 1219,
+        y: 244,
+        
+        booth_no: "21",
+        type: "booth",
+        title: "アカババァ@C107 1日目 西2す21b",
+        handle: "@0725akaba",
+        description: "SD(ﾃﾞﾌｫﾙﾒ)ｲﾗｽﾄﾚｰﾀｰです！ お仕事募集中です！(個人依頼は応相談です)\
+◆ﾒｰﾙ 0725akaba@gmail.com\
+◆SKEB http://skeb.jp/@0725akaba\
+◆実績(敬称略) ホロライブ,GameWith,ぶいすぽっ！,ななしいんく,DMM,comなど",
+        banner: "https://pbs.twimg.com/profile_banners/3324339390/1652011079/1500x500",
+        pfp: "https://pbs.twimg.com/profile_images/1908822583866515456/bJXaD4I6_400x400.jpg",
+        booth: "C107 1日目 西2す21b",
+        day: "Day 1",
+      },
+      {
+        id: "haru_hololive",
+        x: 1219,
+        y: 213,
+        booth_no: "19",
+        type: "booth",
+        title: "メリーはるひな@C107(火)西2 す-19b",
+        handle: "@haru_hololive",
+        description: "イラストレーター　スーパーリアル麻雀 VRキャラデザ＆KV　炎秋さたなママ　ホロライブメン限イラスト　ゲームプロモイラスト　Vtuber記念イラスト　抱き枕カバーイラスト 電撃萌王掲載イラスト　BanG Dream! It’s MyGO!!!!! 企画イラスト\
+carnelianpjin@gmail.com",
+        banner: "https://pbs.twimg.com/profile_banners/1290230574435586048/1657545353/1500x500",
+        pfp: "https://pbs.twimg.com/profile_images/1934097563478863872/ylaDIYMy_400x400.jpg",
+        booth: "C107(火)西2 す-19b",
+        day: "Day 1",
+      },
+      {
+        id: "atasom",
+        x: 1659,
+        y: 513,
+        booth_no: "29",
+        type: "booth",
+        title: "安野将人@火曜日 西「あ」ブロック－29b",
+        handle: "@atasom",
+        description: "アニメーターです。デレステ5周年PV、CM ふらいんぐうぃっち スロウスタート アニメキャラクターデザイン。明日ちゃんのセーラー服総作監 よろしくお願いいたします 。Blue sky→ https://bsky.app/profile/atasom.bsky.social こちらにイラストなど載せてます",
+        banner: "https://pbs.twimg.com/profile_banners/211927741/1579492457/1500x500",
+        pfp: "https://pbs.twimg.com/profile_images/1101706467566972929/WTP9kImC_400x400.jpg",
+        booth: "火曜日 西「あ」ブロック－29b",
+        day: "Day 1",
+      },
+        {
+        id: "nana_kaguraaa",
+        x: 1660,
+        y: 272,
+        booth_no: "34",
+        type: "booth",
+        title: "ななかぐら/カグラナナ🌶️1日目西あ34ab",
+        handle: "@nana_kaguraaa",
+        description: "Illustrator,Vartist ｜TVアニメ『探偵はもう、死んでいる。』ED｜VTuber design百鬼あやめ、ぶいごま、上月なき、猫魔白ソーダ ✉nana.kaguraaa@gmail.com 🌶さぶ(\
+@Kagura_Nanaa\
+) FAﾀｸﾞ▷ #かぐらーと",
+        banner: "https://pbs.twimg.com/profile_banners/4080861612/1671547889/1500x500",
+        pfp: "https://pbs.twimg.com/profile_images/1870317893982064640/gB580m6p_400x400.jpg",
+        booth: "1日目西あ34ab",
+        day: "Day 1",
+      },
+    ],
   },
-  'Day 2': {
-    0: [], 
+  "Day 2": {
+    0: [
+      {
+        id: "pokapoka_18",
+        x: 410,
+        y: 334,
+        booth_no: "25",
+        type: "booth",
+        title: "雪村うさぎ🤍C107＊2日目東4【メ-25a】",
+        handle: "@pokapoka_18",
+        description: ".°ʚ 𝐢𝐥𝐥𝐮𝐬𝐭𝐫𝐚𝐭𝐨𝐫 ɞ°.\n同人美少女ADV #望却のエディシウス 発売中❣\n✦うりぼうざっか店 猫りん堂(連載) PCゲーム原画など \n✦ご依頼はHPからお願いします\nskeb✦http://skeb.jp/@pokapoka_18\nFANBOX✦https://x.gd/5Omgi",
+        banner: "https://pbs.twimg.com/profile_banners/1876099848/1723464050/1500x500",
+        pfp: "https://pbs.twimg.com/profile_images/1874846243685572608/CeyHWHnO_400x400.jpg",
+        booth: "C107(水)西2メ-25a",
+        day: "Day 2",
+      },
+    ],
     1: [
       {
-        id: 'riichu',
+        id: "riichu",
         x: 772,
         y: 868,
-        type: 'booth',
-        booth_no:'10',
-        title: 'りいちゅ🪽C107(水)東A10ab',
-        handle: '@rityulate',
-        description: '',
-        banner: 'https://pbs.twimg.com/profile_banners/52699646/1765765459/1500x500',
-        pfp: 'https://pbs.twimg.com/profile_images/1895114560568229888/ugdGCd6z_400x400.jpg',
-        booth: 'C107(水)東A10ab',
-        day: 'Day 2'
+        booth_no: "10",
+        type: "booth",
+        title: "りいちゅ🪽C107(水)東A10ab",
+        handle: "@rityulate",
+        description: "",
+        banner: "https://pbs.twimg.com/profile_banners/52699646/1765765459/1500x500",
+        pfp: "https://pbs.twimg.com/profile_images/1895114560568229888/ugdGCd6z_400x400.jpg",
+        booth: "C107(水)東A10ab",
+        day: "Day 2",
       },
-    ], 
-    2: [ 
-      
-
     ],
-    3: [ 
+    2: [
+     
     
-    ]
-  }
+    ],
+    3: [
+      {
+        id: "mishima_kurone",
+        x: 1073,
+        y: 64,
+        booth_no: "53",
+        type: "booth",
+        title: "三嶋くろね■C107_水曜西2/あ53ab",
+        handle: "@mishima_kurone",
+        description: "",
+        banner: "https://pbs.twimg.com/profile_banners/159060598/1461340551/1500x500",
+        pfp: "https://pbs.twimg.com/profile_images/1956281623491829761/-YKhwJEF_400x400.jpg",
+        booth: "C107(水)西2あ53ab",
+        day: "Day 2",
+      },
+
+       {
+        id: "kudo_eru",
+        x: 75,
+        y: 663,
+        booth_no: "27",
+        type: "booth",
+        title: "工藤える🎀C107 2日目西1め27a",
+        handle: "@kudo_eru",
+        description: "",
+        banner: "https://pbs.twimg.com/profile_banners/1201513602835828737/1737167025/1500x500",
+        pfp: "https://pbs.twimg.com/profile_images/1621440257475612672/5pIcEIGZ_400x400.jpg",
+        booth: "C107 2日目西1め27a",
+        day: "Day 2",
+      },
+        {
+        id: "tenmu_nagomi",
+        x: 76,
+        y: 529,
+        booth_no: "28",
+        type: "booth",
+        title: "天夢 森流彩🦊2日目 西め28ab 和 ⛩️",
+        handle: "@tenmu_nagomi",
+        description: "絵を気長に描いています、日々練習中\
+和装・けもみみをテーマに同人サークル「和」にて活動しています。",
+        banner: "https://pbs.twimg.com/profile_banners/119117033/1581577496/1500x500",
+        pfp: "https://pbs.twimg.com/profile_images/1228375140976644097/yf1j8jHj_400x400.jpg",
+        booth: "2日目 西め28ab",
+        day: "Day 2",
+      },
+    ],
+  },
 };
