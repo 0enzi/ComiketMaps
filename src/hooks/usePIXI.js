@@ -199,7 +199,22 @@ export const usePIXI = (activeImage, activeDay, markerData, onMarkerClick) => {
           console.log(`Removed ${childrenToRemove.length} stray objects`);
         }
 
-        const imageUrl = `src/images/image${imageIndex + 1}.png`;
+        const imageUrls = {
+        "Day 1": [
+            "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902099/image1_t4hsjw.png",
+            "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902099/image2_uqsi37.png",
+            "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902099/image3_onc2fl.png",
+            "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902100/image4_l2oysh.png"
+        ],
+        "Day 2": [
+            "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902099/image1_t4hsjw.png",
+            "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902099/image2_uqsi37.png",
+            "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902099/image3_onc2fl.png",
+            "https://res.cloudinary.com/dx6o12mfe/image/upload/v1766902100/image4_l2oysh.png"
+        ]
+        };
+        const imageUrl = imageUrls[day]?.[imageIndex];
+
         console.log(`Loading image from: ${imageUrl}`);
 
         let texture;
