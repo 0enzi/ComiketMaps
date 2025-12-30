@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { infoBoardData } from "../data/infoBoardData";
-import { markerData } from "../data/markerData";
+import { markerData } from "../data/newMarkerData";
 
 const InfoBoard = ({
   activeDay,
@@ -363,7 +363,7 @@ const InfoBoard = ({
             }}
           ></div>
           <h4 style={{ color: "white", fontSize: "20px", margin: "10px 0" }}>
-            Map {activeImage + 1} 
+            Map {activeImage + 1}
           </h4>
           <div
             style={{ color: "#aaa", fontSize: "14px", marginBottom: "20px" }}

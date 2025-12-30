@@ -1,13 +1,13 @@
-import { markerData } from '../data/markerData';
+import { markerData } from '../data/newMarkerData';
 import MarkerNumberBox from './MarkerNumberBox';
 
-const TopBar = ({ 
-  activeDay, 
-  activeImage, 
-  zoomLevel, 
-  setActiveDay, 
+const TopBar = ({
+  activeDay,
+  activeImage,
+  zoomLevel,
+  setActiveDay,
   setActiveImage,
-  setSelectedMarker 
+  setSelectedMarker
 }) => {
   const markerCount = markerData[activeDay]?.[activeImage]?.length || 0;
 
@@ -18,7 +18,7 @@ const TopBar = ({
       left: 0,
       right: 0,
       height: 60,
-      background: activeDay === 'Day 1' 
+      background: activeDay === 'Day 1'
         ? 'linear-gradient(to bottom, rgba(26, 35, 126, 0.9) 0%, rgba(26, 35, 126, 0) 100%)'
         : 'linear-gradient(to bottom, rgba(0, 77, 64, 0.9) 0%, rgba(0, 77, 64, 0) 100%)',
       display: 'flex',
@@ -38,7 +38,7 @@ const TopBar = ({
         backdropFilter: 'blur(10px)',
         border: '1px solid rgba(255,255,255,0.1)'
       }}>
-        <select 
+        <select
           value={activeDay}
           onChange={(e) => {
             console.log(`Day changed to: ${e.target.value}`);
@@ -46,7 +46,7 @@ const TopBar = ({
             setSelectedMarker(null);
           }}
           style={{
-            background:  'rgba(0, 0, 0, 1)',
+            background: 'rgba(0, 0, 0, 1)',
             color: 'white',
             border: 'none',
             padding: '8px 12px',
@@ -61,7 +61,7 @@ const TopBar = ({
           <option value="Day 2">Day 2</option>
         </select>
       </div>
-      
+
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -72,7 +72,7 @@ const TopBar = ({
         backdropFilter: 'blur(10px)',
         border: '1px solid rgba(255,255,255,0.1)'
       }}>
-        <button 
+        <button
           onClick={() => {
             console.log('Previous image');
             setActiveImage(prev => (prev - 1 + 4) % 4);
@@ -103,12 +103,12 @@ const TopBar = ({
         >
           ←
         </button>
-        
-        <div style={{ 
-          color: 'white', 
-          fontSize: 16, 
-          fontWeight: 500, 
-          minWidth: 100, 
+
+        <div style={{
+          color: 'white',
+          fontSize: 16,
+          fontWeight: 500,
+          minWidth: 100,
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
@@ -126,8 +126,8 @@ const TopBar = ({
             Found {markerCount} booths.
           </div>
         </div>
-        
-        <button 
+
+        <button
           onClick={() => {
             console.log('Next image');
             setActiveImage(prev => (prev + 1) % 4);
@@ -159,7 +159,7 @@ const TopBar = ({
           →
         </button>
       </div>
-      
+
       <div style={{
         background: 'rgba(0,0,0,0.6)',
         color: 'white',
@@ -172,9 +172,9 @@ const TopBar = ({
         alignItems: 'center',
         gap: 10
       }}>
-        <MarkerNumberBox 
-          number={activeDay === 'Day 1' ? '❶' : '❷'} 
-          day={activeDay} 
+        <MarkerNumberBox
+          number={activeDay === 'Day 1' ? '❶' : '❷'}
+          day={activeDay}
           size={28}
           fontSize={14}
           style={{ border: '2px solid rgba(255,255,255,0.3)' }}

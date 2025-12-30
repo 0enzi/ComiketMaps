@@ -1,5 +1,5 @@
 import { usePIXI } from '../hooks/usePIXI';
-import { markerData } from '../data/markerData';
+import { markerData } from '../data/newMarkerData';
 
 const PIXIViewer = ({ 
   activeImage, 
