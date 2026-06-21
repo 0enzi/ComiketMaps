@@ -74,7 +74,6 @@ class ParseResult:
         }
 
 # --- Character Classes ---
-# Hiragana, Full-width Katakana, Half-width Katakana, Latin Upper/Lower, Full-width Latin Upper/Lower
 SECTION_CHARS = (
     r"\u3041-\u3096"
     r"\u30A1-\u30FA"
@@ -99,9 +98,10 @@ _EVENT_KEYWORDS_RE = re.compile(
     r"|夏コミ"
 )
 
-# Full-width to half-width digits
 _FW_TO_ASCII = str.maketrans("０１２３４５６７８９", "0123456789")
 
+# FIX: Added `(?!\d|日)` to the table number match to prevent it from
+# greedily stealing the "1" out of "1日目" right after a name character.
 _LOCATION_RE = re.compile(
     r"(?P<dir>[東西南])?"
     r"\s*"
@@ -113,11 +113,10 @@ _LOCATION_RE = re.compile(
     rf"(?P<section>[{SECTION_CHARS}])"
     rf"(?:{_PUNCT})?"
     r"[\s\-/]*"
-    r"(?P<table>(?<!\d)\d{1,3}(?!\d))"
+    r"(?P<table>(?<!\d)\d{1,3}(?!\d|日))"
     r"(?P<half>[aAbB]{1,2})?"
 )
 
-# Partial regex for direction+section without table (used for low confidence fallback)
 _PARTIAL_SECTION_RE = re.compile(
     r"(?P<dir>[東西南])\s*"
     r"(?P<hall>[1-9])?\s*"
@@ -234,12 +233,10 @@ def parse_comiket_bio(text: str, event_config: EventConfig,
 
     normalized = _normalize_digits(text)
 
-    # Scrub event keywords (replace with spaces to preserve positions)
     event_kw_spans = [(m.start(), m.end()) for m in _EVENT_KEYWORDS_RE.finditer(normalized)]
     has_event_kw = len(event_kw_spans) > 0
     scrubbed = _EVENT_KEYWORDS_RE.sub(lambda m: " " * (m.end() - m.start()), normalized)
 
-    # Find day markers
     day1_re = _build_day_marker_re(1, event_config.day1)
     day2_re = _build_day_marker_re(2, event_config.day2)
 
@@ -284,7 +281,6 @@ def parse_comiket_bio(text: str, event_config: EventConfig,
             source_field=source_field
         ))
 
-    # Partial matches fallback for low confidence incomplete data
     if not locations and (has_event_kw or day_markers):
         partial_matches = [
             pm for pm in _PARTIAL_SECTION_RE.finditer(scrubbed)
@@ -314,7 +310,6 @@ def parse_comiket_bio(text: str, event_config: EventConfig,
                 confidence="low", source_text=text, source_field=source_field
             ))
 
-    # Deduplicate
     seen = set()
     unique_locs = []
     for loc in locations:
