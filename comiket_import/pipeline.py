@@ -386,6 +386,7 @@ def _build_public(event_id: str, allow_unresolved: bool = False, carry_over_even
             source_artists,
             target_manifest,
             require_target_calibration=event_id.upper() == "C108",
+            target_calibration=calibration,
         )
         public_booths = {booth["booth_id"]: booth for booth in public_booth_list}
         event["data_status"] = "provisional-carry-over"

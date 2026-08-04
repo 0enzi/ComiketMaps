@@ -9,6 +9,7 @@ identity or artist-specific coordinates.
 
 from __future__ import annotations
 
+import math
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 
@@ -107,6 +108,101 @@ def _coordinate(value: Any, size: int) -> float:
     return number if 0 <= number <= 1 else number / size
 
 
+def _canonical_section(value: Any) -> str:
+    text = str(value or "").strip()
+    # The C108 West page prints the perimeter section in hiragana while an
+    # older export contains the visually equivalent katakana spelling.
+    return "め" if text == "メ" else text
+
+
+def _pixel_bounds(value: Any, width: int, height: int) -> Optional[List[float]]:
+    if not isinstance(value, (list, tuple)) or len(value) != 4:
+        return None
+    try:
+        bounds = [float(item) for item in value]
+    except (TypeError, ValueError):
+        return None
+    if not all(math.isfinite(item) for item in bounds):
+        return None
+    if all(0 <= item <= 1 for item in bounds):
+        x, y, bound_width, bound_height = bounds
+        return [x * width, y * height, bound_width * width, bound_height * height]
+    return bounds
+
+
+def _review_calibration_point(
+    target_calibration: Optional[Dict[str, Any]],
+    source_booth: Dict[str, Any],
+    target_map_id: str,
+    target_map: Dict[str, Any],
+) -> Optional[Dict[str, Any]]:
+    """Find a reviewer-confirmed point for a carried-over booth.
+
+    C108's built-in anchors are useful for the initial preview, but they only
+    cover the carried-over records known when the preview was generated.  A
+    maintainer can add any new booth in the localhost review UI.  Those
+    normalized coordinates must take precedence here so the review action is
+    reflected in the next build.
+    """
+    if not target_calibration:
+        return None
+    source_direction = str(source_booth.get("direction") or "").strip().casefold()
+    source_hall = str(source_booth.get("hall") or "").strip()
+    source_section = _canonical_section(source_booth.get("section"))
+    source_table = _canonical_table(source_booth.get("table"))
+    source_half = str(source_booth.get("half") or "unknown").strip().casefold()
+    matches: List[Tuple[int, Dict[str, Any]]] = []
+
+    for map_item in target_calibration.get("maps", []):
+        if map_item.get("map_id") != target_map_id:
+            continue
+        for booth in map_item.get("booths", []):
+            direction = str(booth.get("direction") or "").strip().casefold()
+            if direction != source_direction:
+                continue
+            if _canonical_section(booth.get("section")) != source_section:
+                continue
+            if _canonical_table(booth.get("table")) != source_table:
+                continue
+
+            target_half = str(booth.get("half") or "unknown").strip().casefold()
+            if source_half not in {"", "unknown"} and target_half != source_half:
+                continue
+
+            target_hall = str(booth.get("hall") or "").strip()
+            if source_hall and target_hall and source_hall != target_hall:
+                continue
+
+            score = 0
+            if source_half not in {"", "unknown"} and target_half == source_half:
+                score += 4
+            if source_hall and target_hall == source_hall:
+                score += 2
+            if target_half not in {"", "unknown"}:
+                score += 1
+            if target_hall:
+                score += 1
+            matches.append((score, booth))
+
+    if not matches:
+        return None
+    _, booth = max(matches, key=lambda item: item[0])
+    try:
+        width = int(target_map["width"])
+        height = int(target_map["height"])
+        x = float(booth["x"])
+        y = float(booth["y"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    if not all(math.isfinite(value) for value in (x, y)):
+        return None
+    return {
+        "x": _coordinate(x, width) * width,
+        "y": _coordinate(y, height) * height,
+        "bounds": _pixel_bounds(booth.get("bounds"), width, height),
+    }
+
+
 def carry_over_map_id(booth: Dict[str, Any], target_maps: Iterable[Dict[str, Any]]) -> str:
     direction = booth.get("direction")
     section = str(booth.get("section") or "")
@@ -132,6 +228,7 @@ def build_carry_over(
     source_artists: List[Dict[str, Any]],
     target_manifest: Dict[str, Any],
     require_target_calibration: bool = False,
+    target_calibration: Optional[Dict[str, Any]] = None,
 ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
     source_maps = {item["map_id"]: item for item in source_manifest.get("maps", [])}
     target_maps = {item["map_id"]: item for item in target_manifest.get("maps", [])}
@@ -153,13 +250,20 @@ def build_carry_over(
             raise ValueError(f"Missing source map dimensions for {source_booth.get('booth_id')}")
 
         booth_id = f"{target_manifest['event_id'].lower()}:carry-over:{source_booth['booth_id']}"
+        review_point = _review_calibration_point(target_calibration, source_booth, target_map_id, target_map)
         anchor = _c108_anchor(target_map_id, source_booth.get("section"), source_booth.get("table"))
-        if require_target_calibration and anchor is None:
+        if require_target_calibration and review_point is None and anchor is None:
             raise ValueError(
                 "Missing target cell calibration for "
                 f"{target_map_id}|{source_booth.get('section')}|{source_booth.get('table')}"
             )
-        if anchor is None:
+        bounds = None
+        if review_point is not None:
+            x, y = review_point["x"], review_point["y"]
+            bounds = review_point["bounds"]
+            confidence = "manual"
+            source = "review-calibration"
+        elif anchor is None:
             x = round(_coordinate(source_booth.get("x"), source_map["width"]) * target_map["width"], 3)
             y = round(_coordinate(source_booth.get("y"), source_map["height"]) * target_map["height"], 3)
             confidence = "provisional"
@@ -179,7 +283,7 @@ def build_carry_over(
             "booth_code": source_booth.get("booth_code", "Unknown booth"),
             "x": x,
             "y": y,
-            "bounds": None,
+            "bounds": bounds,
             "confidence": confidence,
             "source": source,
             "artist_keys": [],

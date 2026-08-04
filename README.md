@@ -39,6 +39,8 @@ The checked-in C107 and C108 configs map each official PDF page to a semantic ma
 
 Open the review URL after `review`. Orange rectangles are computer-vision suggestions only. Click a booth cell to capture its normalized point, enter direction, hall, section, table, and half, then save the calibrated booth. Edit artist candidates in the table and accept, reject, exclude, or merge them. Corrections are stored in private `work/events/<event>/review_overrides.json` and are reapplied after a fresh CSV import. `build` stays blocked until unresolved artist records and accepted locations without geometry are cleared.
 
+Reviewer-saved geometry is authoritative for carry-over previews too: a new C108 cell added in the local review UI overrides the provisional C108 anchor table on the next build. Unknown C108 cells remain blocked until a reviewer clicks and saves their position.
+
 Private source PDFs, CSVs, rendered work pages, OCR, and review state live under `work/` and are gitignored. Only reviewed public records and derived assets are written under `public/events/<event-id>/`.
 
 Manual corrections use CSV columns such as `user_id,username,display_name,day,direction,hall,section,table,half,action`. Use `action=replace` when a correction replaces all parsed locations for that artist; ordinary rows replace only the same day. Missing halves remain `unknown` and block publication until reviewed.

@@ -174,6 +174,37 @@ def test_c108_carry_over_requires_and_uses_printed_cell_calibration():
     assert booths[0]["source"] == "c108-cell-calibration"
 
 
+def test_review_calibration_overrides_c108_fallback_anchor():
+    source_manifest = {"maps": [{"map_id": "east-4-6", "width": 100, "height": 100}]}
+    source_booths = [{
+        "booth_id": "east-4-6:1:2", "map_id": "east-4-6", "direction": "East",
+        "hall": None, "section": "ア", "table": "60", "half": "a", "booth_code": "ア60a",
+        "x": 0.01, "y": 0.01,
+    }]
+    source_artists = [{
+        "artist_key": "x:123", "user_id": "123", "username": "artist", "display_name": "Artist",
+        "description": "", "profile_url": "", "avatar_url": "", "banner_url": "",
+        "locations": [{"day": 1, "map_id": "east-4-6", "booth_id": "east-4-6:1:2", "booth_code": "ア60a"}],
+    }]
+    target_manifest = {"event_id": "C108", "maps": [{"map_id": "east-1-3", "width": 2867, "height": 2024}]}
+    target_calibration = {"maps": [{"map_id": "east-1-3", "booths": [{
+        "direction": "East", "hall": None, "section": "ア", "table": "60", "half": "a",
+        "x": 0.2, "y": 0.3, "bounds": [0.19, 0.29, 0.02, 0.03],
+    }]}]}
+    booths, _ = build_carry_over(
+        source_manifest,
+        source_booths,
+        source_artists,
+        target_manifest,
+        require_target_calibration=True,
+        target_calibration=target_calibration,
+    )
+    assert booths[0]["x"] == pytest.approx(2867 * 0.2)
+    assert booths[0]["y"] == pytest.approx(2024 * 0.3)
+    assert booths[0]["bounds"] == pytest.approx([2867 * 0.19, 2024 * 0.29, 2867 * 0.02, 2024 * 0.03])
+    assert booths[0]["source"] == "review-calibration"
+
+
 def test_c108_calibration_covers_every_generated_booth():
     root = Path(__file__).parents[1]
     booths = json.loads((root / "public/events/c108/booths.json").read_text(encoding="utf-8"))
