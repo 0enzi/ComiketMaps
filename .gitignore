@@ -12,6 +12,16 @@ dist
 dist-ssr
 *.local
 
+# Private importer inputs and review state. Generated public/events is tracked.
+work/
+*.pdf
+*.csv
+*.ocr.json
+review_overrides.json
+__pycache__/
+*.py[cod]
+*.egg-info/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

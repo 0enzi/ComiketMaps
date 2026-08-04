@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["artist_key", "username", "locations"],
+    "properties": {
+      "artist_key": {"type": "string"},
+      "username": {"type": "string"},
+      "locations": {"type": "array", "items": {"type": "object", "required": ["day", "map_id", "booth_id", "booth_code"]}}
+    }
+  }
+}

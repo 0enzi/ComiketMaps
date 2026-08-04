@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "comiket-import"
+version = "0.1.0"
+description = "Offline Comiket map importer, review tool, and static event dataset builder"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+pdf = ["Pillow>=10", "opencv-python-headless>=4.8", "pypdf>=4", "pdfplumber>=0.11"]
+ocr = ["pytesseract>=0.3.10"]
+review = ["fastapi>=0.110", "uvicorn>=0.29"]
+validation = ["jsonschema>=4.20", "pydantic>=2.6"]
+dev = ["pytest>=8"]
+
+[tool.setuptools]
+py-modules = ["parser"]
+
+[tool.setuptools.packages.find]
+include = ["comiket_import*"]

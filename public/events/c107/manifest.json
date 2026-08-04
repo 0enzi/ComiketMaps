@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "event_id": "C107",
+  "name": "Comic Market 107",
+  "attribution": "Map source: Comic Market official C107 map (https://www.comiket.co.jp/info-a/C107/C107Map_all_B4.pdf). Redistribution of derived map images must be confirmed before deployment.",
+  "source_pdf": "https://www.comiket.co.jp/info-a/C107/C107Map_all_B4.pdf",
+  "source_pdf_sha256": "ded558246e89467019b0cc02eeabfccc313ec0270d495aa8ba65913a600a9dca",
+  "maps": [
+    {
+      "map_id": "east-4-6",
+      "label": "East 4–6",
+      "page": 1,
+      "asset": "maps/east-4-6.webp",
+      "width": 1720,
+      "height": 1215
+    },
+    {
+      "map_id": "east-7-8",
+      "label": "East 7–8",
+      "page": 2,
+      "asset": "maps/east-7-8.webp",
+      "width": 1720,
+      "height": 1215
+    },
+    {
+      "map_id": "south-1-2",
+      "label": "South 1–2",
+      "page": 3,
+      "asset": "maps/south-1-2.webp",
+      "width": 1720,
+      "height": 1215
+    },
+    {
+      "map_id": "west-1-2",
+      "label": "West 1–2",
+      "page": 4,
+      "asset": "maps/west-1-2.webp",
+      "width": 1720,
+      "height": 1215
+    }
+  ],
+  "days": [
+    {
+      "id": "day-1",
+      "label": "Day 1",
+      "number": 1
+    },
+    {
+      "id": "day-2",
+      "label": "Day 2",
+      "number": 2
+    }
+  ],
+  "generated_at": "2026-08-01T00:00:00Z"
+}

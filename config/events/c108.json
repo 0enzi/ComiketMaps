@@ -1,0 +1,22 @@
+{
+  "event_id": "C108",
+  "event_code": "C108",
+  "name": "Comic Market 108",
+  "dates": ["2026-08-15", "2026-08-16"],
+  "days": [
+    {"id": "day-1", "number": 1, "label": "Day 1 · 2026-08-15", "date": "2026-08-15"},
+    {"id": "day-2", "number": 2, "label": "Day 2 · 2026-08-16", "date": "2026-08-16"}
+  ],
+  "day_specs": {
+    "1": {"month": 8, "day": 15, "weekday_kanji": "土"},
+    "2": {"month": 8, "day": 16, "weekday_kanji": "日"}
+  },
+  "source_pdf_url": "https://www.comiket.co.jp/info-a/C108/C108Map_all_B4.pdf",
+  "attribution": "Map source: Comic Market official C108 circle-space map (https://www.comiket.co.jp/info-a/C108/C108Map_all_B4.pdf). Redistribution of derived map images must be confirmed before deployment.",
+  "maps": [
+    {"map_id": "east-1-3", "label": "East 1–3", "page": 1},
+    {"map_id": "east-7", "label": "East 7", "page": 2},
+    {"map_id": "west-1-2", "label": "West 1–2", "page": 3},
+    {"map_id": "south-1-2", "label": "South 1–2", "page": 4}
+  ]
+}

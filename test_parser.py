@@ -252,3 +252,10 @@ def test_c108_day2_sunday_boundary():
     assert len(r.locations) == 2
     assert r.locations[0].day == 1
     assert r.locations[1].day == 2
+
+
+def test_unrelated_calendar_weekday_does_not_create_comiket_location():
+    text = "2026/2/14(土) live event — tickets available"
+    r = parse_comiket_bio(text, C108_CONFIG)
+    assert not r.is_exhibitor
+    assert r.locations == []

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["booth_id", "map_id", "x", "y", "half"],
+    "properties": {
+      "booth_id": {"type": "string"},
+      "map_id": {"type": "string"},
+      "x": {"type": "number"},
+      "y": {"type": "number"},
+      "half": {"enum": ["a", "b", "ab", "unknown"]}
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "events": [
+    {
+      "event_id": "C107",
+      "name": "Comic Market 107",
+      "manifest": "events/c107/manifest.json"
+    },
+    {
+      "event_id": "C108",
+      "name": "Comic Market 108",
+      "manifest": "events/c108/manifest.json"
+    }
+  ]
+}

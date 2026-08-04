@@ -35,6 +35,10 @@ class EventConfig:
     event_code: str  # e.g. "C108"
     day1: DaySpec
     day2: DaySpec
+    days: Optional[Dict[int, DaySpec]] = None
+
+    def day_specs(self) -> Dict[int, DaySpec]:
+        return self.days or {1: self.day1, 2: self.day2}
 
 @dataclass
 class Location:
@@ -46,6 +50,7 @@ class Location:
     confidence: str
     source_text: str
     source_field: str
+    hall: Optional[str] = None
 
 @dataclass
 class ParseResult:
@@ -68,7 +73,8 @@ class ParseResult:
                     "half": loc.half,
                     "confidence": loc.confidence,
                     "source_text": loc.source_text,
-                    "source_field": loc.source_field
+                    "source_field": loc.source_field,
+                    "hall": loc.hall,
                 } for loc in self.locations
             ]
         }
@@ -133,19 +139,55 @@ def _normalize_digits(s: str) -> str:
     return s.translate(_FW_TO_ASCII)
 
 def _build_day_marker_re(day_num: int, day_spec: DaySpec) -> re.Pattern:
-    kanji_num = "一" if day_num == 1 else "二"
+    kanji_num = {1: "一", 2: "二", 3: "三", 4: "四", 5: "五"}.get(day_num)
     weekday = day_spec.weekday_kanji
     m, d = day_spec.month, day_spec.day
 
     patterns = [
         rf"(?<!\d){day_num}日目",
-        rf"{kanji_num}日目",
-        rf"{weekday}曜(?:日)?",
-        rf"[\(（]\s*{weekday}\s*[\)）]",
-        rf"(?<!\d){m}\s*[/\-．.]\s*{d}(?!\d)",
-        rf"{m}月{d}日",
     ]
+    if kanji_num:
+        patterns.append(rf"{kanji_num}日目")
+    if weekday:
+        patterns.extend([
+            rf"{weekday}曜(?:日)?",
+            rf"[\(（]\s*{weekday}\s*[\)）]",
+        ])
+    if m and d:
+        patterns.extend([
+            rf"(?<!\d){m}\s*[/\-．.]\s*{d}(?!\d)",
+            rf"{m}月{d}日",
+        ])
     return re.compile("|".join(patterns))
+
+
+def _date_before_weekday(text: str, marker_start: int) -> Optional[tuple[int, int]]:
+    """Return a slash-date immediately before a weekday marker, if present.
+
+    Bios frequently contain unrelated calendar dates such as ``2026/2/14(土)``.
+    Treating the weekday in that date as a Comiket day creates a convincing but
+    completely false booth location.  We only inspect the short prefix here so
+    ordinary prose mentioning a weekday remains eligible for parsing.
+    """
+    prefix = text[max(0, marker_start - 32):marker_start]
+    match = re.search(
+        r"(?:\d{4}\s*[/\-]\s*)?(\d{1,2})\s*[/\-]\s*(\d{1,2})\s*$",
+        prefix,
+    )
+    if not match:
+        return None
+    return int(match.group(1)), int(match.group(2))
+
+
+def _is_unrelated_weekday_marker(
+    text: str, marker_start: int, marker_end: int, day_spec: DaySpec
+) -> bool:
+    marker = text[marker_start:marker_end]
+    is_weekday_marker = "曜" in marker or marker.lstrip().startswith(("(", "（"))
+    if not is_weekday_marker:
+        return False
+    date = _date_before_weekday(text, marker_start)
+    return date is not None and date != (day_spec.month, day_spec.day)
 
 def _infer_direction(section: str) -> Optional[str]:
     if not section:
@@ -237,14 +279,13 @@ def parse_comiket_bio(text: str, event_config: EventConfig,
     has_event_kw = len(event_kw_spans) > 0
     scrubbed = _EVENT_KEYWORDS_RE.sub(lambda m: " " * (m.end() - m.start()), normalized)
 
-    day1_re = _build_day_marker_re(1, event_config.day1)
-    day2_re = _build_day_marker_re(2, event_config.day2)
-
     day_markers = []
-    for m in day1_re.finditer(scrubbed):
-        day_markers.append((m.start(), m.end(), 1))
-    for m in day2_re.finditer(scrubbed):
-        day_markers.append((m.start(), m.end(), 2))
+    for day_num, day_spec in event_config.day_specs().items():
+        day_re = _build_day_marker_re(day_num, day_spec)
+        for m in day_re.finditer(scrubbed):
+            if _is_unrelated_weekday_marker(scrubbed, m.start(), m.end(), day_spec):
+                continue
+            day_markers.append((m.start(), m.end(), day_num))
 
     locations = []
     full_matches = list(_LOCATION_RE.finditer(scrubbed))
@@ -278,7 +319,7 @@ def parse_comiket_bio(text: str, event_config: EventConfig,
         locations.append(Location(
             day=day, direction=direction, section=section, table=table,
             half=half, confidence=confidence, source_text=source_text,
-            source_field=source_field
+            source_field=source_field, hall=m.group("hall")
         ))
 
     if not locations and (has_event_kw or day_markers):
@@ -296,7 +337,8 @@ def parse_comiket_bio(text: str, event_config: EventConfig,
                 source_text = _compute_source_text(text, pm.start(), pm.end(), day_markers, event_kw_spans)
                 locations.append(Location(
                     day=day, direction=direction, section=section, table=None,
-                    half=None, confidence="low", source_text=source_text, source_field=source_field
+                    half=None, confidence="low", source_text=source_text, source_field=source_field,
+                    hall=pm.group("hall")
                 ))
         elif day_markers:
             for ds, de, dn in day_markers:

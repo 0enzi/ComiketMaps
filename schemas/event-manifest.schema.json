@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["schema_version", "event_id", "name", "maps", "days", "generated_at"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "event_id": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$"},
+    "name": {"type": "string"},
+    "attribution": {"type": "string"},
+    "source_pdf_sha256": {"type": "string"},
+    "generated_at": {"type": "string"},
+    "days": {"type": "array", "items": {"type": "object", "required": ["id", "label"]}},
+    "maps": {"type": "array", "items": {"type": "object", "required": ["map_id", "label", "page", "asset", "width", "height"]}}
+  }
+}
