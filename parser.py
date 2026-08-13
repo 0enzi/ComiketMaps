@@ -105,6 +105,7 @@ _EVENT_KEYWORDS_RE = re.compile(
 )
 
 _FW_TO_ASCII = str.maketrans("０１２３４５６７８９", "0123456789")
+_URL_RE = re.compile(r"https?://\S+", re.IGNORECASE)
 
 # FIX: Added `(?!\d|日)` to the table number match to prevent it from
 # greedily stealing the "1" out of "1日目" right after a name character.
@@ -112,7 +113,7 @@ _LOCATION_RE = re.compile(
     r"(?P<dir>[東西南])?"
     r"\s*"
     r"(?P<hall>[1-9])?"
-    r"[\s/]*"
+    r"[\s/・\-]*"
     r"(?:ホール)?"
     rf"(?:{_PUNCT})?"
     r"\s*"
@@ -120,6 +121,7 @@ _LOCATION_RE = re.compile(
     rf"(?:{_PUNCT})?"
     r"[\s\-/]*"
     r"(?P<table>(?<!\d)\d{1,3}(?!\d|日))"
+    r"[\s\-/]*"
     r"(?P<half>[aAbB]{1,2})?"
 )
 
@@ -232,6 +234,30 @@ def _compute_confidence(day: Optional[int], direction: Optional[str],
         return "high"
     return "medium"
 
+
+def _is_embedded_ascii_match(text: str, match: re.Match) -> bool:
+    """Reject ASCII section/table pairs found inside handles or prose words.
+
+    Japanese sections are distinctive enough to parse without this guard. ASCII
+    pairs such as ``u3`` in ``@hoshi_u3`` or ``t2`` in ``Art 2`` are common
+    accidental matches. A digit immediately after an explicit hall marker
+    (for example ``東7A21``) remains valid.
+    """
+    section = match.group("section") or ""
+    if not section:
+        return False
+    start = match.start("section")
+    if start == 0:
+        return False
+    previous = text[start - 1]
+    if (previous.isascii() and previous.isalpha()) or previous in "_@":
+        return True
+    if not section.isascii() or not section.isalpha():
+        return False
+    if previous.isdigit() and start >= 2 and text[start - 2] in "東西南":
+        return False
+    return False
+
 def _compute_source_text(original: str, match_start: int, match_end: int,
                          day_markers: list, event_kw_spans: list) -> str:
     day_start = None
@@ -273,7 +299,12 @@ def parse_comiket_bio(text: str, event_config: EventConfig,
     if not text:
         return ParseResult(user_id, username, False, [])
 
-    normalized = _normalize_digits(text)
+    # Preserve offsets while blanking URLs so path fragments such as ``X36``
+    # cannot be mistaken for booth labels.
+    normalized = _URL_RE.sub(
+        lambda match: " " * len(match.group(0)),
+        _normalize_digits(text),
+    )
 
     event_kw_spans = [(m.start(), m.end()) for m in _EVENT_KEYWORDS_RE.finditer(normalized)]
     has_event_kw = len(event_kw_spans) > 0
@@ -291,6 +322,8 @@ def parse_comiket_bio(text: str, event_config: EventConfig,
     full_matches = list(_LOCATION_RE.finditer(scrubbed))
 
     for m in full_matches:
+        if _is_embedded_ascii_match(scrubbed, m):
+            continue
         section = m.group("section")
         table = m.group("table")
         dir_char = m.group("dir")

@@ -21,7 +21,7 @@ from .normalize import (
 
 
 _EVENT_CODE_RE = re.compile(r"\bC\d{3}\b", re.IGNORECASE)
-_EXPLICIT_HALF_RE = re.compile(r"\d{1,3}\s*([aAbB]{1,2})(?![A-Za-z])")
+_EXPLICIT_HALF_RE = re.compile(r"\d{1,3}\s*\\?[-/]?\s*([aAbB]{1,2})(?![A-Za-z])")
 
 
 def event_config_from_dict(value: Dict[str, object]) -> EventConfig:
@@ -54,8 +54,16 @@ def _event_conflict(text: str, event_code: str) -> bool:
     return bool(mentioned and event_code.upper() not in mentioned)
 
 
-def _explicit_half(source_text: str) -> str:
-    match = _EXPLICIT_HALF_RE.search(source_text or "")
+def _explicit_half(source_text: str, table: Optional[str] = None) -> str:
+    text = source_text or ""
+    if table:
+        escaped_table = re.escape(str(table).strip())
+        match = re.search(
+            rf"(?<!\d){escaped_table}\s*\\?[-/]?\s*([aAbB]{{1,2}})(?![A-Za-z])",
+            text,
+        )
+    else:
+        match = _EXPLICIT_HALF_RE.search(text)
     return normalize_half(match.group(1)) if match else "unknown"
 
 
@@ -70,7 +78,7 @@ def _candidate_from_location(
     source_field: str,
 ) -> LocationCandidate:
     conflict = _event_conflict(source_text, event_config.event_code)
-    half = _explicit_half(source_text)
+    half = _explicit_half(source_text, getattr(location, "table", None))
     reason_parts = []
     status = "accepted"
     if conflict:

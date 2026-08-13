@@ -253,6 +253,36 @@ def test_manual_calibration_saves_normalized_semantic_geometry():
     assert calibration["maps"][0]["booths"] == [booth]
 
 
+def test_explicit_half_uses_the_location_table_not_the_hall_number(tmp_path: Path):
+    csv_path = tmp_path / "c108_half_formats.csv"
+    csv_path.write_text(
+        "User ID,Username,Name,Bio\n"
+        ",hall-space,2日目東7 A07ab,\n"
+        ",hyphen-space,C108 2日目東7ホールA23-b,\n"
+        ",missing,C108 2日目東1ア29,\n",
+        encoding="utf-8",
+    )
+    records = read_artist_csv(
+        csv_path,
+        "C108",
+        event_config_from_dict({
+            "event_code": "C108",
+            "day_specs": {
+                "1": {"month": 8, "day": 15, "weekday_kanji": "土"},
+                "2": {"month": 8, "day": 16, "weekday_kanji": "日"},
+            },
+        }),
+    )
+    halves = {record.username: record.locations[0].half for record in records}
+    assert halves == {"hall-space": "ab", "hyphen-space": "b", "missing": "unknown"}
+
+
+def test_explicit_half_accepts_discord_escaped_separator():
+    from comiket_import.artists import _explicit_half
+
+    assert _explicit_half("C108 東7 A23\\-ab", "23") == "ab"
+
+
 def test_public_validation_rejects_unknown_day(tmp_path: Path):
     source = Path(__file__).parents[1] / "public/events/c107"
     target = tmp_path / "c107"

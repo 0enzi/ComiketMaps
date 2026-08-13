@@ -145,6 +145,45 @@ def test_bug8_no_section_character_hallucination():
     assert loc.table == "41"
     assert loc.half == "a"
 
+@pytest.mark.parametrize("text,expected", [
+    (
+        "ほし💛8/16C108 東1【ア18ab】 (@hoshi_u3) on X",
+        [(2, "East", "ア", "18", "ab")],
+    ),
+    (
+        "イチリ⓲二日目東７Ａ04ab (@itiri234r) on X",
+        [(2, "East", "Ａ", "04", "ab")],
+    ),
+    (
+        "HoR / 1 Art 2 Days / C108 1日目(土) 東1イ19b (@horuhara) on X",
+        [(1, "East", "イ", "19", "b")],
+    ),
+])
+def test_profile_text_does_not_turn_handles_or_words_into_booths(text, expected):
+    result = parse_comiket_bio(text, C108_CONFIG)
+    actual = [
+        (loc.day, loc.direction, loc.section, loc.table, loc.half)
+        for loc in result.locations
+    ]
+    assert actual == expected
+
+def test_url_path_fragment_is_not_a_booth():
+    result = parse_comiket_bio(
+        "C108 1日目東ア21ab https://t.co/X36zrg4Rwe",
+        C108_CONFIG,
+    )
+    assert [
+        (loc.day, loc.direction, loc.section, loc.table, loc.half)
+        for loc in result.locations
+    ] == [(1, "East", "ア", "21", "ab")]
+
+def test_half_after_separator_is_captured():
+    result = parse_comiket_bio(
+        "C108 2日目(日)東7ホールA23-ab",
+        C108_CONFIG,
+    )
+    assert result.locations[0].half == "ab"
+
 # ---------------------------------------------------------------------------
 # Happy Path / Specific Feature Tests
 # ---------------------------------------------------------------------------
@@ -235,6 +274,18 @@ def test_hall_number_noise():
     assert loc.section == "D"
     assert loc.table == "01"
     assert loc.direction == "East"
+
+@pytest.mark.parametrize("text", [
+    "C108 土曜日 東7-E44b",
+    "C108 東７・Ａ19ab",
+])
+def test_hall_separator_variants(text):
+    r = parse_comiket_bio(text, C108_CONFIG)
+    assert r.is_exhibitor
+    assert len(r.locations) == 1
+    loc = r.locations[0]
+    assert loc.hall == "7"
+    assert loc.table in {"44", "19"}
 
 def test_c108_config_swap():
     text = "C108 1日目(土)東メ40ab"
