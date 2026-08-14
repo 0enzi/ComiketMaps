@@ -103,7 +103,7 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
   };
 
   return <div className="map-fallback" ref={frameRef} onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={stopDrag} onPointerCancel={stopDrag} onWheel={zoomAt}>
-    <div className="map-fallback-stage" style={{ width: imageWidth, height: imageHeight, transform: `translate3d(${view.x}px, ${view.y}px, 0) scale(${view.scale})` }}>
+    <div className="map-fallback-stage" style={{ width: imageWidth, height: imageHeight, transform: `translate(${view.x}px, ${view.y}px) scale(${view.scale})` }}>
       {!imageError ? <img src={map.asset} alt={`${map.label} map`} draggable="false" onError={() => setImageError(true)} /> : <div className="map-fallback-error">Map image could not be loaded.</div>}
       {markers.map((marker) => <button
         type="button"

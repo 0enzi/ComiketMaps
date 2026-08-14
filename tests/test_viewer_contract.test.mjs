@@ -5,7 +5,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { calibratedC107Point, legacyPixelToOfficialPage, stablePointKey } from "../tools/c107Geometry.mjs";
 import { groupMarkers } from "../src/data/markerGrouping.js";
-import { clampMapScale, clampMapView, fitMapScale } from "../src/data/mapViewport.js";
+import { clampMapScale, clampMapView, fitMapScale, MAP_MAX_SCALE } from "../src/data/mapViewport.js";
 import { markerTableLabel } from "../src/data/markerLabel.js";
 import { MAP_MARKER_SIZE, priorityCssColor, priorityLabel } from "../src/data/markerStyle.js";
 import { latestEventEntry } from "../src/data/eventSelection.js";
@@ -45,6 +45,7 @@ test("map annotations scale with the image and zoom-out stops at fit", () => {
   assert.equal(fitted, 900 / 1720);
   assert.equal(clampMapScale(0.08, fitted), fitted);
   assert.equal(clampMapScale(fitted * 2, fitted), fitted * 2);
+  assert.equal(clampMapScale(99, fitted), MAP_MAX_SCALE);
   assert.equal(MAP_MARKER_SIZE * fitted, MAP_MARKER_SIZE * (900 / 1720));
 });
 

@@ -31,7 +31,7 @@ button { -webkit-tap-highlight-color: transparent; }
 
 .map-fallback { overflow: hidden; cursor: grab; touch-action: none; user-select: none; background: radial-gradient(circle at 35% 20%, #364247 0, #232c30 38%, #151b1f 100%); }
 .map-fallback:active { cursor: grabbing; }
-.map-fallback-stage { position: absolute; top: 0; left: 0; transform-origin: 0 0; will-change: transform; }
+.map-fallback-stage { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
 .map-fallback-stage img { display: block; width: 100%; height: 100%; object-fit: fill; pointer-events: none; user-select: none; }
 .map-fallback-error { display: grid; place-items: center; width: 100%; height: 100%; color: #fff; background: #242a2f; font-size: 14px; }
 .priority-0 { --priority-color: var(--priority-green); }

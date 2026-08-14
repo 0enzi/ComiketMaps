@@ -3,6 +3,7 @@ import * as PIXI from "pixi.js";
 import { Viewport } from "pixi-viewport";
 import { markerTableLabel } from "../data/markerLabel";
 import { MAP_MARKER_SIZE, priorityPixiColor } from "../data/markerStyle";
+import { MAP_MAX_SCALE } from "../data/mapViewport";
 
 const PIXI_ENABLED = import.meta.env.VITE_ENABLE_PIXI === "true";
 
@@ -57,7 +58,7 @@ export function usePIXI(map, markers, onMarkerClick, onZoomChange) {
     spriteRef.current = sprite;
     viewport.addChild(sprite);
     const fit = Math.min(viewport.screenWidth / imageWidth, viewport.screenHeight / imageHeight) * 0.92;
-    viewport.clampZoom({ minScale: fit, maxScale: 10 });
+    viewport.clampZoom({ minScale: fit, maxScale: MAP_MAX_SCALE });
     viewport.setZoom(fit, true);
     viewport.moveCenter(sprite.x, sprite.y);
     setZoom(fit);
@@ -103,7 +104,7 @@ export function usePIXI(map, markers, onMarkerClick, onZoomChange) {
       const viewport = new Viewport({ screenWidth: windowSize.width, screenHeight: windowSize.height, worldWidth: Number(map?.width) || windowSize.width, worldHeight: Number(map?.height) || windowSize.height, ticker: app.ticker, events: app.renderer.events, passiveWheel: false, stopPropagation: true });
       app.stage.addChild(viewport); viewportRef.current = viewport;
       viewport.drag({ pressDrag: false, wheel: false }).pinch({ factor: 1 }).wheel({ smooth: 10, interrupt: true }).decelerate().clamp({ direction: "all", underflow: "center" });
-      viewport.clampZoom({ minScale: 0.1, maxScale: 10 });
+      viewport.clampZoom({ minScale: 0.1, maxScale: MAP_MAX_SCALE });
       viewport.on("zoomed", () => { setZoom(viewport.scale.x); });
       setInitialized(true);
     })().catch((error) => {
@@ -125,7 +126,7 @@ export function usePIXI(map, markers, onMarkerClick, onZoomChange) {
     window.addEventListener("resize", resize); return () => window.removeEventListener("resize", resize);
   }, []);
 
-  const handleZoomIn = () => { const viewport = viewportRef.current; if (viewport) viewport.setZoom(Math.min(10, viewport.scale.x * 1.2), true); };
+  const handleZoomIn = () => { const viewport = viewportRef.current; if (viewport) viewport.setZoom(Math.min(MAP_MAX_SCALE, viewport.scale.x * 1.2), true); };
   const handleZoomOut = () => { const viewport = viewportRef.current; if (viewport) viewport.setZoom(Math.max(0.1, viewport.scale.x * 0.8), true); };
   const handleResetZoom = () => { if (viewportRef.current && spriteRef.current) { const viewport = viewportRef.current; const sprite = spriteRef.current; const fit = Math.min(viewport.screenWidth / sprite.width, viewport.screenHeight / sprite.height) * 0.92; viewport.setZoom(fit, true); viewport.moveCenter(sprite.x, sprite.y); setZoom(fit); } };
   return { canvasRef, zoomLevel, handleZoomIn, handleZoomOut, handleResetZoom, loadError, pixiReady, rendererFailed };
