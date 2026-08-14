@@ -1,975 +1,322 @@
 [
   {
-    "booth_id": "c108:carry-over:east-4-6:64:36",
+    "booth_id": "east-1-3:east:unknown-hall:ア:08:ab",
     "map_id": "east-1-3",
     "direction": "East",
     "hall": null,
     "section": "ア",
-    "table": "60",
-    "half": "a",
-    "booth_code": "ア60a",
-    "x": 858.5,
-    "y": 448.5,
+    "table": "08",
+    "half": "ab",
+    "booth_code": "東ア08ab",
+    "x": 0.9605859783746076,
+    "y": 0.5239624505928854,
     "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
     "artist_keys": [
-      "xhandle:blade4649"
+      "xhandle:ayamy_garubinu"
     ]
   },
   {
-    "booth_id": "c108:carry-over:east-4-6:53:34",
+    "booth_id": "east-1-3:east:1:ア:17:ab",
     "map_id": "east-1-3",
     "direction": "East",
-    "hall": null,
+    "hall": "1",
     "section": "ア",
-    "table": "64",
+    "table": "17",
     "half": "ab",
-    "booth_code": "ア64ab",
-    "x": 706.0,
-    "y": 420.0,
+    "booth_code": "東ア17ab",
+    "x": 0.9670387164283223,
+    "y": 0.34288537549407117,
     "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
     "artist_keys": [
-      "xhandle:ogipote"
+      "xhandle:osanpo_choco"
     ]
   },
   {
-    "booth_id": "c108:carry-over:east-4-6:8:56",
+    "booth_id": "east-1-3:east:1:ア:18:ab",
     "map_id": "east-1-3",
     "direction": "East",
-    "hall": null,
+    "hall": "1",
     "section": "ア",
-    "table": "80",
-    "half": "ab",
-    "booth_code": "ア80ab",
-    "x": 124.5,
-    "y": 720.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:kazukiadumi"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:7:66",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "ア",
-    "table": "84",
-    "half": "ab",
-    "booth_code": "ア84ab",
-    "x": 142.0,
-    "y": 842.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:parsley_f",
-      "xhandle:sakurapion"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:7:76",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "ア",
-    "table": "85",
-    "half": "b",
-    "booth_code": "ア85b",
-    "x": 142.0,
-    "y": 980.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:sakurapion"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:86:84",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "ノ",
-    "table": "09",
-    "half": "b",
-    "booth_code": "ノ9b",
-    "x": 1157.0,
-    "y": 1086.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:hiiragiryo"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:90:38",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "ノ",
-    "table": "30",
-    "half": "a",
-    "booth_code": "ノ30a",
-    "x": 1157.0,
-    "y": 558.25,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:hisagi_02"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:73:79",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "ヒ",
-    "table": "09",
-    "half": "ab",
-    "booth_code": "ヒ9ab",
-    "x": 1004.5,
-    "y": 1021.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:hidulme"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:59:87",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "ホ",
-    "table": "09",
-    "half": "ab",
-    "booth_code": "ホ9ab",
-    "x": 820.0,
-    "y": 1122.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:kurumi_lm"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:55:67",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "マ",
     "table": "18",
     "half": "ab",
-    "booth_code": "マ18ab",
-    "x": 756.5,
-    "y": 854.75,
+    "booth_code": "東ア18ab",
+    "x": 0.9670387164283223,
+    "y": 0.3300395256916996,
     "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
     "artist_keys": [
-      "xhandle:ayamygarubinu"
+      "xhandle:hoshi_u3"
     ]
   },
   {
-    "booth_id": "c108:carry-over:east-4-6:41:73",
+    "booth_id": "east-1-3:east:1:ア:29:ab",
     "map_id": "east-1-3",
     "direction": "East",
-    "hall": null,
-    "section": "メ",
-    "table": "16",
-    "half": "b",
-    "booth_code": "メ16b",
-    "x": 570.5,
-    "y": 935.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:kabedoru"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:39:46",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "メ",
-    "table": "34",
-    "half": "a",
-    "booth_code": "メ34a",
-    "x": 544.5,
-    "y": 579.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:chia_momochi_"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:39:49",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "メ",
-    "table": "36",
+    "hall": "1",
+    "section": "ア",
+    "table": "29",
     "half": "ab",
-    "booth_code": "メ36ab",
-    "x": 544.5,
-    "y": 621.75,
+    "booth_code": "東ア29ab",
+    "x": 0.8721660272061388,
+    "y": 0.22282608695652173,
     "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:kitairoha"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:39:52",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "メ",
-    "table": "38",
-    "half": "a",
-    "booth_code": "メ38a",
-    "x": 544.5,
-    "y": 665.25,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:izuminanase"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:39:55",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "メ",
-    "table": "39",
-    "half": "b",
-    "booth_code": "メ39b",
-    "x": 544.5,
-    "y": 703.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:yuyucocco_"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:39:57",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "メ",
-    "table": "40",
-    "half": "a",
-    "booth_code": "メ40a",
-    "x": 544.5,
-    "y": 725.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:mikaze_oto"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:39:60",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "メ",
-    "table": "42",
-    "half": "a",
-    "booth_code": "メ42a",
-    "x": 544.5,
-    "y": 768.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:horioo"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:39:63",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "メ",
-    "table": "44",
-    "half": "b",
-    "booth_code": "メ44b",
-    "x": 544.5,
-    "y": 811.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:ri0177"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:21:49",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "ユ",
-    "table": "37",
-    "half": "ab",
-    "booth_code": "ユ37ab",
-    "x": 293.5,
-    "y": 578.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:ponika_illust"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:21:55",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "ユ",
-    "table": "40",
-    "half": "ab",
-    "booth_code": "ユ40ab",
-    "x": 293.5,
-    "y": 642.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:tateha_mg"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:21:60",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "ユ",
-    "table": "43",
-    "half": "ab",
-    "booth_code": "ユ43ab",
-    "x": 293.5,
-    "y": 725.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:yuimisu_"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:21:74",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "ユ",
-    "table": "49",
-    "half": "a",
-    "booth_code": "ユ49a",
-    "x": 293.5,
-    "y": 854.75,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:kazukiadumi"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:21:79",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "ユ",
-    "table": "52",
-    "half": "ab",
-    "booth_code": "ユ52ab",
-    "x": 293.5,
-    "y": 979.75,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:mikeou_"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:16:90",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": null,
-    "section": "ヨ",
-    "table": "49",
-    "half": "ab",
-    "booth_code": "ヨ49ab",
-    "x": 229.0,
-    "y": 1166.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:t1kosewad78"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:78:104",
-    "map_id": "east-7",
-    "direction": "East",
-    "hall": null,
-    "section": "A",
-    "table": "10",
-    "half": "ab",
-    "booth_code": "A10ab",
-    "x": 1207.0,
-    "y": 1364.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:riichu"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-7-8:82:96",
-    "map_id": "east-7",
-    "direction": "East",
-    "hall": null,
-    "section": "A",
-    "table": "13",
-    "half": "ab",
-    "booth_code": "A13ab",
-    "x": 1280.0,
-    "y": 1252.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
     "artist_keys": [
       "xhandle:konominoco"
     ]
   },
   {
-    "booth_id": "c108:carry-over:east-7-8:19:29",
+    "booth_id": "east-1-3:east:1:イ:19:b",
+    "map_id": "east-1-3",
+    "direction": "East",
+    "hall": "1",
+    "section": "イ",
+    "table": "19",
+    "half": "b",
+    "booth_code": "東イ19b",
+    "x": 0.93739100104639,
+    "y": 0.3591897233201581,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:horuhara"
+    ]
+  },
+  {
+    "booth_id": "east-1-3:east:unknown-hall:キ:09:ab",
+    "map_id": "east-1-3",
+    "direction": "East",
+    "hall": null,
+    "section": "キ",
+    "table": "09",
+    "half": "ab",
+    "booth_code": "東キ09ab",
+    "x": 0.8276944541332403,
+    "y": 0.5550889328063241,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:mimmi_sak"
+    ]
+  },
+  {
+    "booth_id": "east-1-3:east:1:ク:47:ab",
+    "map_id": "east-1-3",
+    "direction": "East",
+    "hall": "1",
+    "section": "ク",
+    "table": "47",
+    "half": "ab",
+    "booth_code": "東ク47ab",
+    "x": 0.7968259504708755,
+    "y": 0.4624505928853755,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:cottontail0112"
+    ]
+  },
+  {
+    "booth_id": "east-1-3:east:unknown-hall:ク:48:b",
+    "map_id": "east-1-3",
+    "direction": "East",
+    "hall": null,
+    "section": "ク",
+    "table": "48",
+    "half": "b",
+    "booth_code": "東ク48b",
+    "x": 0.7968259504708755,
+    "y": 0.47381422924901184,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:mikaze_oto"
+    ]
+  },
+  {
+    "booth_id": "east-7:east:unknown-hall:A:01:ab",
     "map_id": "east-7",
     "direction": "East",
     "hall": null,
     "section": "A",
-    "table": "34",
+    "table": "01",
     "half": "ab",
-    "booth_code": "A34ab",
-    "x": 249.0,
-    "y": 287.0,
+    "booth_code": "東A01ab",
+    "x": 0.34777118939658175,
+    "y": 0.8366600790513834,
     "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
+    "artist_keys": [
+      "xhandle:kinnotamadx"
+    ]
+  },
+  {
+    "booth_id": "east-7:east:7:A:04:ab",
+    "map_id": "east-7",
+    "direction": "East",
+    "hall": "7",
+    "section": "A",
+    "table": "04",
+    "half": "ab",
+    "booth_code": "東A04ab",
+    "x": 0.3654482036972445,
+    "y": 0.7972134387351778,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:itiri234r"
+    ]
+  },
+  {
+    "booth_id": "east-7:east:7:A:07:ab",
+    "map_id": "east-7",
+    "direction": "East",
+    "hall": "7",
+    "section": "A",
+    "table": "07",
+    "half": "ab",
+    "booth_code": "東A07ab",
+    "x": 0.386341123125218,
+    "y": 0.7514130434782608,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:kanzarinsan"
+    ]
+  },
+  {
+    "booth_id": "east-7:east:7:A:09:ab",
+    "map_id": "east-7",
+    "direction": "East",
+    "hall": "7",
+    "section": "A",
+    "table": "09",
+    "half": "ab",
+    "booth_code": "東A09ab",
+    "x": 0.41526334147192184,
+    "y": 0.6874505928853756,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:sae_sky77"
+    ]
+  },
+  {
+    "booth_id": "east-7:east:7:A:19:ab",
+    "map_id": "east-7",
+    "direction": "East",
+    "hall": "7",
+    "section": "A",
+    "table": "19",
+    "half": "ab",
+    "booth_code": "東A19ab",
+    "x": 0.3646668991977677,
+    "y": 0.14204545454545456,
+    "bounds": null,
     "artist_keys": [
       "xhandle:shirorokitsune"
     ]
   },
   {
-    "booth_id": "c108:carry-over:east-7-8:76:77",
+    "booth_id": "east-7:east:7:A:21:ab",
     "map_id": "east-7",
     "direction": "East",
-    "hall": null,
-    "section": "D",
-    "table": "01",
-    "half": "a",
-    "booth_code": "D1a",
-    "x": 1183.5,
-    "y": 987.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:oguraponti"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-7-8:47:77",
-    "map_id": "east-7",
-    "direction": "East",
-    "hall": null,
-    "section": "I",
-    "table": "48",
-    "half": "a",
-    "booth_code": "I48a",
-    "x": 709.0,
-    "y": 987.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:kurumi_lm"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-7-8:42:75",
-    "map_id": "east-7",
-    "direction": "East",
-    "hall": null,
-    "section": "J",
-    "table": "02",
-    "half": "b",
-    "booth_code": "J2b",
-    "x": 625.5,
-    "y": 961.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:szcb911"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:south-1-2:143:39",
-    "map_id": "south-1-2",
-    "direction": "South",
-    "hall": null,
-    "section": "a",
-    "table": "29",
+    "hall": "7",
+    "section": "A",
+    "table": "21",
     "half": "ab",
-    "booth_code": "a29ab",
-    "x": 2033.0,
-    "y": 348.0,
+    "booth_code": "東A21ab",
+    "x": 0.3399023369375654,
+    "y": 0.14204545454545456,
     "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:momoco_haru"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:south-1-2:123:36",
-    "map_id": "south-1-2",
-    "direction": "South",
-    "hall": null,
-    "section": "a",
-    "table": "30",
-    "half": "ab",
-    "booth_code": "a30ab",
-    "x": 1736.5,
-    "y": 302.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:yuukamiya68"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:160:41",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "あ",
-    "table": "34",
-    "half": "ab",
-    "booth_code": "あ34ab",
-    "x": 2664.5,
-    "y": 505.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
     "artist_keys": [
       "xhandle:nana_kaguraaa"
     ]
   },
   {
-    "booth_id": "c108:carry-over:west-1-2:160:35",
+    "booth_id": "east-7:east:7:A:23:ab",
+    "map_id": "east-7",
+    "direction": "East",
+    "hall": "7",
+    "section": "A",
+    "table": "23",
+    "half": "ab",
+    "booth_code": "東A23ab",
+    "x": 0.2420648761771887,
+    "y": 0.141798418972332,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:sasorigatame"
+    ]
+  },
+  {
+    "booth_id": "east-7:east:7:E:44:b",
+    "map_id": "east-7",
+    "direction": "East",
+    "hall": "7",
+    "section": "E",
+    "table": "44",
+    "half": "b",
+    "booth_code": "東E44b",
+    "x": 0.37408440878967564,
+    "y": 0.4407114624505929,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:reityana"
+    ]
+  },
+  {
+    "booth_id": "east-7:east:7:K:18:b",
+    "map_id": "east-7",
+    "direction": "East",
+    "hall": "7",
+    "section": "K",
+    "table": "18",
+    "half": "b",
+    "booth_code": "東K18b",
+    "x": 0.18904778514126264,
+    "y": 0.25691699604743085,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:savisavichan"
+    ]
+  },
+  {
+    "booth_id": "east-7:east:7:M:12:ab",
+    "map_id": "east-7",
+    "direction": "East",
+    "hall": "7",
+    "section": "M",
+    "table": "12",
+    "half": "ab",
+    "booth_code": "東M12ab",
+    "x": 0.12870596442274154,
+    "y": 0.35968379446640314,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:naco_info"
+    ]
+  },
+  {
+    "booth_id": "west-1-2:west:unknown-hall:あ:55:ab",
     "map_id": "west-1-2",
     "direction": "West",
     "hall": null,
     "section": "あ",
-    "table": "36",
+    "table": "55",
     "half": "ab",
-    "booth_code": "あ36ab",
-    "x": 2664.5,
-    "y": 418.0,
+    "booth_code": "西あ55ab",
+    "x": 0.5652249738402512,
+    "y": 0.0983201581027668,
     "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:oshioshio"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:160:28",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "あ",
-    "table": "38",
-    "half": "ab",
-    "booth_code": "あ38ab",
-    "x": 2649.5,
-    "y": 315.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:c10h14n2pome"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:106:19",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "あ",
-    "table": "53",
-    "half": "ab",
-    "booth_code": "あ53ab",
-    "x": 1748.5,
-    "y": 179.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:mishima_kurone"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:94:19",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "あ",
-    "table": "57",
-    "half": "b",
-    "booth_code": "あ57b",
-    "x": 1556.0,
-    "y": 199.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:tiv_"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:132:37",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "さ",
-    "table": "20",
-    "half": "a",
-    "booth_code": "さ20a",
-    "x": 2246.0,
-    "y": 435.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:mikeou_"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:119:35",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "す",
-    "table": "19",
-    "half": "b",
-    "booth_code": "す19b",
-    "x": 1978.0,
-    "y": 388.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:haru_hololive"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:119:38",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "す",
-    "table": "21",
-    "half": "b",
-    "booth_code": "す21b",
-    "x": 1978.0,
-    "y": 435.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:0725akaba"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:63:27",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "と",
-    "table": "15",
-    "half": "a",
-    "booth_code": "と15a",
-    "x": 1031.0,
-    "y": 291.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:klee_0303"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:31:53",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "は",
-    "table": "41",
-    "half": "a",
-    "booth_code": "は41a",
-    "x": 491.0,
-    "y": 682.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:momoshiki"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:25:70",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "ひ",
-    "table": "50",
-    "half": "b",
-    "booth_code": "ひ50b",
-    "x": 398.5,
-    "y": 973.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:koyubita"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:44:110",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "へ",
-    "table": "09",
-    "half": "b",
-    "booth_code": "へ9b",
-    "x": 708.5,
-    "y": 1526.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:konpe0217"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:44:109",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "へ",
-    "table": "10",
-    "half": "a",
-    "booth_code": "へ10a",
-    "x": 708.5,
-    "y": 1503.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:kagachi_sk"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:42:95",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "へ",
-    "table": "36",
-    "half": "a",
-    "booth_code": "へ36a",
-    "x": 674.5,
-    "y": 1303.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:sn_hiyori"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:30:37",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "ほ",
-    "table": "33",
-    "half": "a",
-    "booth_code": "ほ33a",
-    "x": 580.5,
-    "y": 1198.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:1jo_0"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:31:45",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "ほ",
-    "table": "36",
-    "half": "b",
-    "booth_code": "ほ36b",
-    "x": 580.0,
-    "y": 1303.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:1jo_0"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:13:100",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "め",
-    "table": "24",
-    "half": "ab",
-    "booth_code": "め24ab",
-    "x": 217.5,
-    "y": 1380.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:nimono_"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:13:83",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "め",
-    "table": "27",
-    "half": "a",
-    "booth_code": "め27a",
-    "x": 217.5,
-    "y": 1121.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:kudo_eru"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:13:68",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "め",
-    "table": "28",
-    "half": "ab",
-    "booth_code": "め28ab",
-    "x": 217.5,
-    "y": 896.0,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
     "artist_keys": [
       "xhandle:tenmu_nagomi"
     ]
   },
   {
-    "booth_id": "c108:carry-over:west-1-2:13:48",
+    "booth_id": "west-1-2:west:unknown-hall:へ:04:a",
     "map_id": "west-1-2",
     "direction": "West",
     "hall": null,
-    "section": "め",
-    "table": "32",
-    "half": "ab",
-    "booth_code": "め32ab",
-    "x": 217.5,
-    "y": 608.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:40hara"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:west-1-2:40:19",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "め",
-    "table": "47",
-    "half": "ab",
-    "booth_code": "め47ab",
-    "x": 663.0,
-    "y": 198.5,
-    "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
-    "artist_keys": [
-      "xhandle:kaguramea"
-    ]
-  },
-  {
-    "booth_id": "c108:carry-over:east-4-6:41:52",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "メ",
-    "table": "25",
+    "section": "へ",
+    "table": "04",
     "half": "a",
-    "booth_code": "メ25a",
-    "x": 217.5,
-    "y": 1185.5,
+    "booth_code": "西へ04a",
+    "x": 0.2471224276246948,
+    "y": 0.8364624505928854,
     "bounds": null,
-    "confidence": "calibrated",
-    "source": "c108-cell-calibration",
     "artist_keys": [
-      "xhandle:pokapoka_18"
+      "xhandle:mikaze_oto"
     ]
   }
 ]

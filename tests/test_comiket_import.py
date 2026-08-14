@@ -120,14 +120,14 @@ def test_public_c108_contract_contains_all_four_maps():
     assert {item["event_id"] for item in index["events"]} >= {"C107", "C108"}
     assert [item["map_id"] for item in manifest["maps"]] == ["east-1-3", "east-7", "west-1-2", "south-1-2"]
     assert all((root / "public/events/c108" / item["asset"]).exists() for item in manifest["maps"])
-    assert manifest["data_status"] == "provisional-carry-over"
+    assert "data_status" not in manifest
     artists = json.loads((root / "public/events/c108/artists.json").read_text(encoding="utf-8"))
     booths = json.loads((root / "public/events/c108/booths.json").read_text(encoding="utf-8"))
-    assert len(artists) == 50
-    assert len(booths) == 54
-    assert sum(len(artist["locations"]) for artist in artists) == 55
-    assert all(booth["source"] == "c108-cell-calibration" for booth in booths)
-    assert all(booth["confidence"] == "calibrated" for booth in booths)
+    assert len(artists) == 19
+    assert len(booths) == 20
+    assert sum(len(artist["locations"]) for artist in artists) == 20
+    assert all(booth["artist_keys"] for booth in booths)
+    assert all(0 <= booth["x"] <= 1 and 0 <= booth["y"] <= 1 for booth in booths)
 
 
 def test_carry_over_uses_target_map_and_normalized_geometry():
