@@ -76,7 +76,7 @@ def test_public_c107_contract_is_deterministic_and_private_free():
     assert len(location_ids) == len({(artist["artist_key"], location["day"], location["booth_id"]) for artist in artists for location in artist["locations"]})
     assert all("source_text" not in location and "status" not in location for artist in artists for location in artist["locations"])
     assert not (root / "public/events/c107/review-queue.json").exists()
-    assert index["events"][0]["manifest"] == "events/c107/manifest.json"
+    assert all(item["event_id"] != "C107" for item in index["events"])
 
 
 def test_review_override_can_be_reapplied_after_reimport():
@@ -117,7 +117,7 @@ def test_public_c108_contract_contains_all_four_maps():
     root = Path(__file__).parents[1]
     index = json.loads((root / "public/events/index.json").read_text(encoding="utf-8"))
     manifest = json.loads((root / "public/events/c108/manifest.json").read_text(encoding="utf-8"))
-    assert {item["event_id"] for item in index["events"]} >= {"C107", "C108"}
+    assert {item["event_id"] for item in index["events"]} == {"C108"}
     assert [item["map_id"] for item in manifest["maps"]] == ["east-1-3", "east-7", "west-1-2", "south-1-2"]
     assert all((root / "public/events/c108" / item["asset"]).exists() for item in manifest["maps"])
     assert "data_status" not in manifest

@@ -59,6 +59,8 @@ button { -webkit-tap-highlight-color: transparent; }
 .top-controls label:first-child select { max-width: 72px; }
 .top-controls button { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid #ffffff18; border-radius: 10px; color: #dffeff; background: #ffffff12; cursor: pointer; transition: background .15s ease, transform .15s ease, border-color .15s ease; }
 .top-controls button:hover, .top-controls button:focus-visible { border-color: #57e4e166; background: #22d3d633; transform: translateY(-1px); }
+.top-controls .offline-button { display: inline-flex; align-items: center; justify-content: center; gap: 4px; width: auto; min-width: 32px; padding: 0 7px; color: #d6e6e8; font-size: 9px; font-weight: 800; }
+.top-controls .offline-button.ready { color: #8fffc2; border-color: #2bd17f66; background: #2bd17f18; }
 .map-status { display: flex; flex: 0 1 112px; flex-direction: column; min-width: 86px; padding: 0 5px; text-align: center; }
 .map-status-kicker { display: inline-flex; align-items: center; justify-content: center; gap: 4px; color: #7f9599; font-size: 8px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .map-status strong { overflow: hidden; font-size: 12px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
@@ -120,6 +122,15 @@ button { -webkit-tap-highlight-color: transparent; }
 .panel-toggle:hover, .panel-toggle:focus-visible { background: #1e292e; }
 .map-loading { position: absolute; inset: 0; display: grid; place-items: center; color: #f6f7f9; background: #11161a66; font-size: 14px; pointer-events: none; }
 .map-error-toast { position: absolute; right: 14px; bottom: 14px; padding: 8px 10px; border: 1px solid #ffb37a55; border-radius: 9px; color: #ffd6b8; background: #552d1dcc; box-shadow: 0 8px 24px #0004; font-size: 10px; pointer-events: none; }
+.offline-help-backdrop { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 20px; background: #050708b8; backdrop-filter: blur(8px); }
+.offline-help { position: relative; width: min(100%, 360px); padding: 22px 22px 20px; border: 1px solid #ffffff24; border-radius: 18px; color: #dce8e9; background: #152024f5; box-shadow: 0 20px 70px #0009; }
+.offline-help-close { position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid #ffffff22; border-radius: 9px; color: #e7f4f4; background: #ffffff0d; cursor: pointer; }
+.offline-help-close:hover, .offline-help-close:focus-visible { background: #ffffff1d; }
+.offline-help-icon { display: grid; place-items: center; width: 36px; height: 36px; margin-bottom: 11px; border: 1px solid #2bd17f66; border-radius: 11px; color: #8fffc2; background: #2bd17f18; }
+.offline-help h2 { margin: 0 32px 8px 0; color: #f5ffff; font-size: 19px; letter-spacing: -.03em; }
+.offline-help p { margin: 0 0 10px; color: #b4c5c7; font-size: 11px; line-height: 1.5; }
+.offline-help ol { display: grid; gap: 8px; margin: 0 0 14px; padding-left: 20px; color: #e8f1f1; font-size: 12px; line-height: 1.4; }
+.offline-help small { display: block; color: #91a4a7; font-size: 10px; line-height: 1.45; }
 .app-state { display: grid; place-items: center; height: 100%; padding: 30px; color: #dce2eb; background: #0b0e11; text-align: center; }
 .app-state.error { display: flex; flex-direction: column; gap: 10px; }
 .app-state button { padding: 9px 16px; border: 0; border-radius: 8px; color: #071315; background: #22d3d6; cursor: pointer; }
@@ -153,6 +164,8 @@ button { -webkit-tap-highlight-color: transparent; }
   .top-controls label > span { display: none; }
   .top-controls select, .top-controls label:first-child select { max-width: 70px; padding: 6px 17px 6px 5px; font-size: 10px; }
   .top-controls button { width: 30px; height: 30px; }
+  .top-controls .offline-button { width: 30px; min-width: 30px; padding: 0; }
+  .top-controls .offline-button span { display: none; }
   .map-status { flex: 1 1 auto; min-width: 72px; padding: 0 2px; }
   .map-status-kicker { font-size: 7px; }
   .map-status strong { font-size: 11px; }
@@ -169,4 +182,6 @@ button { -webkit-tap-highlight-color: transparent; }
   .artist-banner { height: 56px; margin-bottom: 7px; }
   .artist-description { font-size: 10px; }
   .marker-row { padding: 8px 9px; }
+  .offline-help-backdrop { align-items: end; padding: 10px; padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+  .offline-help { border-radius: 17px; }
 }

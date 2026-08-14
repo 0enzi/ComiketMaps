@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import TopBar from "./components/TopBar";
 import InfoBoard from "./components/InfoBoard";
 import PIXIViewer from "./components/PIXIViewer";
+import Icon from "./components/Icon";
 import { loadEvent, loadEventIndex, markersFor } from "./data/eventData";
 import { latestEventEntry } from "./data/eventSelection";
 import "./index.css";
@@ -17,6 +18,17 @@ function App() {
   const [zoomLevel, setZoomLevel] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [offlineReady, setOfflineReady] = useState(false);
+  const [offlineHelpOpen, setOfflineHelpOpen] = useState(false);
+
+  useEffect(() => {
+    if (!("serviceWorker" in navigator)) return undefined;
+    let active = true;
+    navigator.serviceWorker.ready.then(() => {
+      if (active) setOfflineReady(true);
+    }).catch(() => {});
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -69,10 +81,24 @@ function App() {
       <PIXIViewer map={activeMap} markers={markers} selectedMarker={selectedMarker} panelOpen={panelOpen} dayLabel={activeDay.label} onMarkerClick={setSelectedMarker} onZoomChange={setZoomLevel} isLoading={loading} />
       <TopBar
         event={event} eventEntries={eventIndex?.events || []} eventId={eventId} dayId={activeDay.id} mapId={activeMap.map_id} panelOpen={panelOpen}
-        zoomLevel={zoomLevel} setEventId={changeEvent} setDayId={changeDay} setMapId={(id) => { setMapId(id); setSelectedMarker(null); }}
+        zoomLevel={zoomLevel} offlineReady={offlineReady} onOfflineHelp={() => setOfflineHelpOpen(true)} setEventId={changeEvent} setDayId={changeDay} setMapId={(id) => { setMapId(id); setSelectedMarker(null); }}
       />
       <InfoBoard event={event} day={activeDay} map={activeMap} mapPosition={activeMapIndex + 1} mapCount={event.maps.length} markers={markers} selectedMarker={selectedMarker} panelOpen={panelOpen} setPanelOpen={setPanelOpen} setSelectedMarker={setSelectedMarker} />
       {error && <div className="inline-error">{error}</div>}
+      {offlineHelpOpen && <div className="offline-help-backdrop" role="presentation" onClick={() => setOfflineHelpOpen(false)}>
+        <section className="offline-help" role="dialog" aria-modal="true" aria-labelledby="offline-help-title" onClick={(event) => event.stopPropagation()}>
+          <button className="offline-help-close" onClick={() => setOfflineHelpOpen(false)} aria-label="Close offline instructions" title="Close"><Icon name="x" size={17} /></button>
+          <span className="offline-help-icon"><Icon name="download" size={19} /></span>
+          <h2 id="offline-help-title">Use Comiket Maps offline</h2>
+          <p>Open this page in Safari while online, wait for the button to say <strong>Saved</strong>, then:</p>
+          <ol>
+            <li>Tap Safari’s <strong>Share</strong> button.</li>
+            <li>Choose <strong>Add to Home Screen</strong>.</li>
+            <li>Open Comiket Maps from the new home-screen icon.</li>
+          </ol>
+          <small>The reviewed maps and event data are bundled for offline use. Social-media profile images may still need a connection.</small>
+        </section>
+      </div>}
     </main>
   );
 }

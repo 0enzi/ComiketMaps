@@ -1,6 +1,6 @@
 import { usePIXI } from "../hooks/usePIXI";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { clampMapScale, fitMapScale } from "../data/mapViewport";
+import { clampMapScale, clampMapView, fitMapScale } from "../data/mapViewport";
 import { markerTableLabel } from "../data/markerLabel";
 import { normalizePriority, priorityLabel } from "../data/markerStyle";
 
@@ -27,7 +27,7 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
     if (!width || !height) return;
     const scale = fitMapScale(width, height, imageWidth, imageHeight);
     setFrame({ width, height });
-    setView({ scale, x: (width - imageWidth * scale) / 2, y: (height - imageHeight * scale) / 2 });
+    setView(clampMapView({ scale, x: (width - imageWidth * scale) / 2, y: (height - imageHeight * scale) / 2 }, width, height, imageWidth, imageHeight));
   }, [imageHeight, imageWidth]);
 
   useEffect(() => {
@@ -67,17 +67,17 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
         const start = pinchRef.current;
         const minimumScale = fitMapScale(frameRef.current.clientWidth, frameRef.current.clientHeight, imageWidth, imageHeight);
         const nextScale = clampMapScale(start.view.scale * distance / start.distance, minimumScale);
-        return {
+        return clampMapView({
           scale: nextScale,
           x: cursorX - (cursorX - start.view.x) * (nextScale / start.view.scale),
           y: cursorY - (cursorY - start.view.y) * (nextScale / start.view.scale),
-        };
+        }, frameRef.current.clientWidth, frameRef.current.clientHeight, imageWidth, imageHeight);
       });
       return;
     }
     if (!dragRef.current) return;
     const drag = dragRef.current;
-    setView((current) => ({ ...current, x: drag.viewX + event.clientX - drag.x, y: drag.viewY + event.clientY - drag.y }));
+    setView((current) => clampMapView({ ...current, x: drag.viewX + event.clientX - drag.x, y: drag.viewY + event.clientY - drag.y }, frameRef.current.clientWidth, frameRef.current.clientHeight, imageWidth, imageHeight));
   };
   const stopDrag = (event) => {
     pointersRef.current.delete(event.pointerId);
@@ -94,11 +94,11 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
       const nextScale = clampMapScale(current.scale * factor, minimumScale);
       const cursorX = event.clientX - rect.left;
       const cursorY = event.clientY - rect.top;
-      return {
+      return clampMapView({
         scale: nextScale,
         x: cursorX - (cursorX - current.x) * (nextScale / current.scale),
         y: cursorY - (cursorY - current.y) * (nextScale / current.scale),
-      };
+      }, frameRef.current.clientWidth, frameRef.current.clientHeight, imageWidth, imageHeight);
     });
   };
 

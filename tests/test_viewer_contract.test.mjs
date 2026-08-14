@@ -5,7 +5,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { calibratedC107Point, legacyPixelToOfficialPage, stablePointKey } from "../tools/c107Geometry.mjs";
 import { groupMarkers } from "../src/data/markerGrouping.js";
-import { clampMapScale, fitMapScale } from "../src/data/mapViewport.js";
+import { clampMapScale, clampMapView, fitMapScale } from "../src/data/mapViewport.js";
 import { markerTableLabel } from "../src/data/markerLabel.js";
 import { MAP_MARKER_SIZE, priorityCssColor, priorityLabel } from "../src/data/markerStyle.js";
 import { latestEventEntry } from "../src/data/eventSelection.js";
@@ -46,6 +46,16 @@ test("map annotations scale with the image and zoom-out stops at fit", () => {
   assert.equal(clampMapScale(0.08, fitted), fitted);
   assert.equal(clampMapScale(fitted * 2, fitted), fitted * 2);
   assert.equal(MAP_MARKER_SIZE * fitted, MAP_MARKER_SIZE * (900 / 1720));
+});
+
+test("map panning stays inside the visible image bounds", () => {
+  const clamped = clampMapView({ scale: 8, x: 100, y: 576 }, 900, 900, 2867, 2024);
+  assert.equal(clamped.x, 0);
+  assert.equal(clamped.y, 0);
+
+  const centered = clampMapView({ scale: 0.2, x: -50, y: 999 }, 900, 900, 2867, 2024);
+  assert.equal(centered.x, (900 - 2867 * 0.2) / 2);
+  assert.equal(centered.y, (900 - 2024 * 0.2) / 2);
 });
 
 test("C107 legacy coordinates go through the explicit page transform", () => {

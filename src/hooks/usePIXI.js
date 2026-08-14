@@ -48,12 +48,14 @@ export function usePIXI(map, markers, onMarkerClick, onZoomChange) {
     const texture = await PIXI.Assets.load(map.asset);
     const sprite = new PIXI.Sprite(texture);
     sprite.anchor.set(0.5);
-    sprite.x = viewport.worldWidth / 2;
-    sprite.y = viewport.worldHeight / 2;
-    spriteRef.current = sprite;
-    viewport.addChild(sprite);
     const imageWidth = Number(map.width) || texture.width;
     const imageHeight = Number(map.height) || texture.height;
+    viewport.worldWidth = imageWidth;
+    viewport.worldHeight = imageHeight;
+    sprite.x = imageWidth / 2;
+    sprite.y = imageHeight / 2;
+    spriteRef.current = sprite;
+    viewport.addChild(sprite);
     const fit = Math.min(viewport.screenWidth / imageWidth, viewport.screenHeight / imageHeight) * 0.92;
     viewport.clampZoom({ minScale: fit, maxScale: 10 });
     viewport.setZoom(fit, true);
@@ -98,9 +100,9 @@ export function usePIXI(map, markers, onMarkerClick, onZoomChange) {
       await app.init({ canvas: canvasRef.current, preference: "webgl", width: windowSize.width, height: windowSize.height, backgroundColor: 0x0a0a0a, resolution: window.devicePixelRatio || 1, antialias: true, autoDensity: true });
       if (cancelled) { app.destroy(true); return; }
       appRef.current = app;
-      const viewport = new Viewport({ screenWidth: windowSize.width, screenHeight: windowSize.height, worldWidth: windowSize.width * 2, worldHeight: windowSize.height * 2, ticker: app.ticker, events: app.renderer.events, passiveWheel: false, stopPropagation: true });
+      const viewport = new Viewport({ screenWidth: windowSize.width, screenHeight: windowSize.height, worldWidth: Number(map?.width) || windowSize.width, worldHeight: Number(map?.height) || windowSize.height, ticker: app.ticker, events: app.renderer.events, passiveWheel: false, stopPropagation: true });
       app.stage.addChild(viewport); viewportRef.current = viewport;
-      viewport.drag({ pressDrag: false, wheel: false }).pinch({ factor: 1 }).wheel({ smooth: 10, interrupt: true }).decelerate();
+      viewport.drag({ pressDrag: false, wheel: false }).pinch({ factor: 1 }).wheel({ smooth: 10, interrupt: true }).decelerate().clamp({ direction: "all", underflow: "center" });
       viewport.clampZoom({ minScale: 0.1, maxScale: 10 });
       viewport.on("zoomed", () => { setZoom(viewport.scale.x); });
       setInitialized(true);
@@ -112,7 +114,7 @@ export function usePIXI(map, markers, onMarkerClick, onZoomChange) {
       }
     });
     return () => { cancelled = true; setInitialized(false); setPixiReady(false); clearWorld(); appRef.current?.destroy(true); appRef.current = null; viewportRef.current = null; };
-  }, [clearWorld, setZoom, windowSize.height, windowSize.width]);
+  }, [clearWorld, map?.height, map?.width, setZoom, windowSize.height, windowSize.width]);
 
   // The async asset promise is an external system; publish its failure after the promise settles.
   // eslint-disable-next-line react-hooks/set-state-in-effect

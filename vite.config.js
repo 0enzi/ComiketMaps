@@ -34,6 +34,9 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // Keep the complete reviewed event archive in the install cache so
+        // Add to Home Screen remains useful without a network connection.
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,webp,json}"],
         navigateFallback: "index.html",
         runtimeCaching: [
           {
