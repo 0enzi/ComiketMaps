@@ -561,6 +561,22 @@
     ]
   },
   {
+    "booth_id": "west-1-2:west:1:め:26:ab",
+    "map_id": "west-1-2",
+    "direction": "West",
+    "hall": "1",
+    "section": "め",
+    "table": "26",
+    "half": "ab",
+    "booth_code": "西め26ab",
+    "x": 0.07586327171259157,
+    "y": 0.5697875494071146,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:40hara"
+    ]
+  },
+  {
     "booth_id": "west-1-2:west:unknown-hall:め:72:b",
     "map_id": "west-1-2",
     "direction": "West",

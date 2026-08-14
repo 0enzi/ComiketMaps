@@ -31,24 +31,50 @@ _PROFILE_SUFFIX_RE = re.compile(
     r"\s*\(@[^\n)]*(?:\)|\.\.\.)?\s*(?:on X)?\s*$",
     re.IGNORECASE,
 )
+_HANDLE_RE = re.compile(r"(?<![A-Za-z0-9_])@([A-Za-z0-9_]{1,15})\b")
+_DISCORD_ESCAPE_RE = re.compile(r"\\([\\`*_{}\[\]()#+\-.!|>~])")
+_RESERVED_X_ROUTES = {
+    "compose",
+    "explore",
+    "home",
+    "i",
+    "intent",
+    "messages",
+    "notifications",
+    "search",
+    "settings",
+    "share",
+}
+
+
+def _unescape_discord_markdown(value: object) -> str:
+    return _DISCORD_ESCAPE_RE.sub(r"\1", str(value or ""))
 
 
 def _username_from_url(url: object, author: object) -> str:
     parsed = urlparse(normalize_text(url))
     segments = [segment for segment in parsed.path.split("/") if segment]
     if parsed.netloc.lower() in {"x.com", "www.x.com", "twitter.com", "www.twitter.com"} and segments:
-        return normalize_username(segments[0])
+        candidate = normalize_username(segments[0])
+        if candidate.casefold() not in _RESERVED_X_ROUTES:
+            return candidate
+    author_text = normalize_text(author)
+    handle_match = _HANDLE_RE.search(author_text)
+    if handle_match:
+        return normalize_username(handle_match.group(1))
     return normalize_username(author)
 
 
 def _body_lines(body: object) -> List[str]:
-    return [normalize_text(line) for line in str(body or "").splitlines() if normalize_text(line)]
+    body_text = _unescape_discord_markdown(body)
+    return [normalize_text(line) for line in body_text.splitlines() if normalize_text(line)]
 
 
 def _display_name(username: str, author: object, body: object, existing: Dict[str, Any]) -> str:
     author_text = normalize_text(author)
-    if author_text and normalize_username(author_text) != username:
-        return author_text
+    author_name = _PROFILE_SUFFIX_RE.sub("", author_text).strip()
+    if author_name and normalize_username(author_name) != username:
+        return author_name
     lines = _body_lines(body)
     if lines and lines[0].casefold() != "manual c108 profile metadata":
         candidate = _PROFILE_SUFFIX_RE.sub("", lines[0]).strip()
@@ -58,7 +84,7 @@ def _display_name(username: str, author: object, body: object, existing: Dict[st
 
 
 def _description(body: object, existing: Dict[str, Any]) -> str:
-    preserved = normalize_text(existing.get("description"))
+    preserved = normalize_text(_unescape_discord_markdown(existing.get("description")))
     if preserved:
         return preserved
     lines = _body_lines(body)

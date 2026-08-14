@@ -78,6 +78,50 @@ def test_bot_database_imports_only_exhibitors_and_deduplicates_locations(tmp_pat
     assert location.status == "accepted"
 
 
+def test_bot_database_recovers_handle_from_generic_x_status_url(tmp_path: Path):
+    database = tmp_path / "nyaa.db"
+    connection = sqlite3.connect(database)
+    connection.executescript("""
+        CREATE TABLE analyses (
+            id INTEGER PRIMARY KEY, url TEXT, author TEXT, body TEXT,
+            is_exhibitor INTEGER, event_code TEXT, priority INTEGER
+        );
+        CREATE TABLE locations (
+            id INTEGER PRIMARY KEY, analysis_id INTEGER, day INTEGER,
+            direction TEXT, hall TEXT, section TEXT, space_no TEXT,
+            half TEXT, booth TEXT, confidence TEXT, source_text TEXT
+        );
+        INSERT INTO analyses VALUES
+            (1, 'https://x.com/i/status/2086660814996644157',
+             'しま原🐈8/28初画集発売 (@40hara)',
+             'C108 booth post
+8/16\\(日\\)西1ホール【め\\-26ab】', 1, 'C108', 10);
+        INSERT INTO locations VALUES
+            (1, 1, 2, 'West', '1', 'め', '26', 'ab',
+             '西1-め26ab', 'high', '(日)西1ホール【め-26ab');
+    """)
+    connection.commit()
+    connection.close()
+
+    records = read_bot_database(database, "C108")
+
+    assert len(records) == 1
+    assert records[0].username == "40hara"
+    assert records[0].display_name == "しま原🐈8/28初画集発売"
+    assert records[0].description == "8/16(日)西1ホール【め-26ab】"
+    assert records[0].profile_url == "https://x.com/40hara"
+    assert records[0].priority == 10
+    location = records[0].locations[0]
+    assert (location.day, location.direction, location.hall) == (2, "West", "1")
+    assert (location.section, location.table, location.half) == ("め", "26", "ab")
+
+    preserved = read_bot_database(database, "C108", [{
+        "username": "40hara",
+        "description": "saved\\(profile\\) with escaped punctuation\\.",
+    }])
+    assert preserved[0].description == "saved(profile) with escaped punctuation."
+
+
 def test_event_conflict_and_multiple_same_day_are_reviewed(tmp_path: Path):
     csv_path = tmp_path / "following.csv"
     csv_path.write_text(
@@ -166,9 +210,9 @@ def test_public_c108_contract_contains_all_four_maps():
     assert "data_status" not in manifest
     artists = json.loads((root / "public/events/c108/artists.json").read_text(encoding="utf-8"))
     booths = json.loads((root / "public/events/c108/booths.json").read_text(encoding="utf-8"))
-    assert len(artists) == 35
-    assert len(booths) == 36
-    assert sum(len(artist["locations"]) for artist in artists) == 37
+    assert len(artists) == 36
+    assert len(booths) == 37
+    assert sum(len(artist["locations"]) for artist in artists) == 38
     assert all(booth["artist_keys"] for booth in booths)
     assert all(0 <= booth["x"] <= 1 and 0 <= booth["y"] <= 1 for booth in booths)
 
