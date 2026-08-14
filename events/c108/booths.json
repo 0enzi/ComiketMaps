@@ -28,6 +28,7 @@
     "y": 0.34288537549407117,
     "bounds": null,
     "artist_keys": [
+      "xhandle:fukemachi",
       "xhandle:osanpo_choco"
     ]
   },
@@ -48,6 +49,38 @@
     ]
   },
   {
+    "booth_id": "east-1-3:east:1:ア:19:ab",
+    "map_id": "east-1-3",
+    "direction": "East",
+    "hall": "1",
+    "section": "ア",
+    "table": "19",
+    "half": "ab",
+    "booth_code": "東ア19ab",
+    "x": 0.9672131147540983,
+    "y": 0.3169466403162055,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:hasuroot"
+    ]
+  },
+  {
+    "booth_id": "east-1-3:east:1:ア:20:a",
+    "map_id": "east-1-3",
+    "direction": "East",
+    "hall": "1",
+    "section": "ア",
+    "table": "20",
+    "half": "a",
+    "booth_code": "東ア20a",
+    "x": 0.9609347750261598,
+    "y": 0.28606719367588934,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:amedamacon"
+    ]
+  },
+  {
     "booth_id": "east-1-3:east:1:ア:29:ab",
     "map_id": "east-1-3",
     "direction": "East",
@@ -64,6 +97,22 @@
     ]
   },
   {
+    "booth_id": "east-1-3:east:2:ア:48:ab",
+    "map_id": "east-1-3",
+    "direction": "East",
+    "hall": "2",
+    "section": "ア",
+    "table": "48",
+    "half": "ab",
+    "booth_code": "東ア48ab",
+    "x": 0.5418555981862574,
+    "y": 0.20800395256916995,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:karory"
+    ]
+  },
+  {
     "booth_id": "east-1-3:east:1:イ:19:b",
     "map_id": "east-1-3",
     "direction": "East",
@@ -77,6 +126,38 @@
     "bounds": null,
     "artist_keys": [
       "xhandle:horuhara"
+    ]
+  },
+  {
+    "booth_id": "east-1-3:east:1:ウ:15:ab",
+    "map_id": "east-1-3",
+    "direction": "East",
+    "hall": "1",
+    "section": "ウ",
+    "table": "15",
+    "half": "ab",
+    "booth_code": "東ウ15ab",
+    "x": 0.9164632019532613,
+    "y": 0.4841897233201581,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:mikeou_"
+    ]
+  },
+  {
+    "booth_id": "east-1-3:east:1:ウ:24:ab",
+    "map_id": "east-1-3",
+    "direction": "East",
+    "hall": "1",
+    "section": "ウ",
+    "table": "24",
+    "half": "ab",
+    "booth_code": "東ウ24ab",
+    "x": 0.9164632019532613,
+    "y": 0.3591897233201581,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:yunmi_0527"
     ]
   },
   {
@@ -125,6 +206,38 @@
     "bounds": null,
     "artist_keys": [
       "xhandle:mikaze_oto"
+    ]
+  },
+  {
+    "booth_id": "east-1-3:east:1:ク:51:a",
+    "map_id": "east-1-3",
+    "direction": "East",
+    "hall": "1",
+    "section": "ク",
+    "table": "51",
+    "half": "a",
+    "booth_code": "東ク51a",
+    "x": 0.7966515521450994,
+    "y": 0.5049407114624506,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:ame_usari"
+    ]
+  },
+  {
+    "booth_id": "east-1-3:east:1:ケ:14:a",
+    "map_id": "east-1-3",
+    "direction": "East",
+    "hall": "1",
+    "section": "ケ",
+    "table": "14",
+    "half": "a",
+    "booth_code": "東ケ14a",
+    "x": 0.7710149982560167,
+    "y": 0.4841897233201581,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:my_106820"
     ]
   },
   {
@@ -192,6 +305,22 @@
     ]
   },
   {
+    "booth_id": "east-7:east:7:A:17:ab",
+    "map_id": "east-7",
+    "direction": "East",
+    "hall": "7",
+    "section": "A",
+    "table": "17",
+    "half": "ab",
+    "booth_code": "東A17ab",
+    "x": 0.47513079874433206,
+    "y": 0.5540019762845849,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:yuukihagure"
+    ]
+  },
+  {
     "booth_id": "east-7:east:7:A:19:ab",
     "map_id": "east-7",
     "direction": "East",
@@ -240,6 +369,54 @@
     ]
   },
   {
+    "booth_id": "east-7:east:7:A:34:ab",
+    "map_id": "east-7",
+    "direction": "East",
+    "hall": "7",
+    "section": "A",
+    "table": "34",
+    "half": "ab",
+    "booth_code": "東A34ab",
+    "x": 0.08685036623648414,
+    "y": 0.141798418972332,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:momoco_haru"
+    ]
+  },
+  {
+    "booth_id": "east-7:east:7:B:04:ab",
+    "map_id": "east-7",
+    "direction": "East",
+    "hall": "7",
+    "section": "B",
+    "table": "04",
+    "half": "ab",
+    "booth_code": "東B04ab",
+    "x": 0.46808510638297873,
+    "y": 0.45207509881422925,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:_machi0910"
+    ]
+  },
+  {
+    "booth_id": "east-7:east:unknown-hall:E:24:b",
+    "map_id": "east-7",
+    "direction": "East",
+    "hall": null,
+    "section": "E",
+    "table": "24",
+    "half": "b",
+    "booth_code": "東E24b",
+    "x": 0.38402511335891176,
+    "y": 0.18725296442687747,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:haru_hololive"
+    ]
+  },
+  {
     "booth_id": "east-7:east:7:E:44:b",
     "map_id": "east-7",
     "direction": "East",
@@ -272,6 +449,22 @@
     ]
   },
   {
+    "booth_id": "east-7:east:7:L:45:b",
+    "map_id": "east-7",
+    "direction": "East",
+    "hall": "7",
+    "section": "L",
+    "table": "45",
+    "half": "b",
+    "booth_code": "東L45b",
+    "x": 0.14911056853854204,
+    "y": 0.45207509881422925,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:momoshiki"
+    ]
+  },
+  {
     "booth_id": "east-7:east:7:M:12:ab",
     "map_id": "east-7",
     "direction": "East",
@@ -285,6 +478,54 @@
     "bounds": null,
     "artist_keys": [
       "xhandle:naco_info"
+    ]
+  },
+  {
+    "booth_id": "south-1-2:south:2:i:11:b",
+    "map_id": "south-1-2",
+    "direction": "South",
+    "hall": "2",
+    "section": "i",
+    "table": "11",
+    "half": "b",
+    "booth_code": "南i11b",
+    "x": 0.5884199511684688,
+    "y": 0.43157114624505927,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:tomachan_02"
+    ]
+  },
+  {
+    "booth_id": "west-1-2:west:2:あ:05:ab",
+    "map_id": "west-1-2",
+    "direction": "West",
+    "hall": "2",
+    "section": "あ",
+    "table": "05",
+    "half": "ab",
+    "booth_code": "西あ05ab",
+    "x": 0.7891524241367283,
+    "y": 0.9105731225296443,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:irasutogakari"
+    ]
+  },
+  {
+    "booth_id": "west-1-2:west:2:あ:45:a",
+    "map_id": "west-1-2",
+    "direction": "West",
+    "hall": "2",
+    "section": "あ",
+    "table": "45",
+    "half": "a",
+    "booth_code": "西あ45a",
+    "x": 0.8053714684339031,
+    "y": 0.08868577075098814,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:amedamacon"
     ]
   },
   {
@@ -317,6 +558,22 @@
     "bounds": null,
     "artist_keys": [
       "xhandle:mikaze_oto"
+    ]
+  },
+  {
+    "booth_id": "west-1-2:west:unknown-hall:め:72:b",
+    "map_id": "west-1-2",
+    "direction": "West",
+    "hall": null,
+    "section": "め",
+    "table": "72",
+    "half": "b",
+    "booth_code": "西め72b",
+    "x": 0.28426927101499827,
+    "y": 0.8483201581027668,
+    "bounds": null,
+    "artist_keys": [
+      "xhandle:_smiledumpling"
     ]
   }
 ]
