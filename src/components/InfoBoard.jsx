@@ -1,12 +1,13 @@
 import { useEffect, useRef } from "react";
+import Icon from "./Icon";
 
 function ArtistProfile({ artist }) {
   const image = artist.avatar_url || artist.banner_url;
   return <article className="artist-profile">
-    {artist.banner_url && <img className="artist-banner" src={artist.banner_url} alt="" onError={(event) => { event.currentTarget.style.display = "none"; }} />}
+    {artist.banner_url && <img className="artist-banner" src={artist.banner_url} alt="" loading="lazy" onError={(event) => { event.currentTarget.style.display = "none"; }} />}
     <div className="artist-heading">
-      {image && <img className="artist-avatar" src={image} alt="" onError={(event) => { event.currentTarget.style.display = "none"; }} />}
-      <div><h3>{artist.display_name || artist.username}</h3><a href={artist.profile_url || `https://x.com/${artist.username}`} target="_blank" rel="noreferrer">@{artist.username}</a></div>
+      {image && <img className="artist-avatar" src={image} alt="" loading="lazy" onError={(event) => { event.currentTarget.style.display = "none"; }} />}
+      <div className="artist-heading-copy"><h3>{artist.display_name || artist.username}</h3><a href={artist.profile_url || `https://x.com/${artist.username}`} target="_blank" rel="noreferrer">@{artist.username} <Icon name="external" size={12} /></a></div>
     </div>
     {artist.description && <p className="artist-description">{artist.description}</p>}
   </article>;
@@ -21,25 +22,25 @@ export default function InfoBoard({ event, day, map, mapPosition, mapCount, mark
     previous.current = selectedMarker;
   }, [selectedMarker, panelOpen, setPanelOpen]);
 
-  if (!panelOpen) return <button className="panel-toggle closed" onClick={() => setPanelOpen(true)} aria-label="Open booth list">☰</button>;
-  return <aside className="info-board">
+  if (!panelOpen) return <button className="panel-toggle closed" onClick={() => setPanelOpen(true)} aria-label="Open booth list" title="Open booth list"><Icon name="list" size={19} /></button>;
+  return <aside className="info-board" aria-label="Map details">
     <div className="panel-header">
       <div>
-        <div className="panel-header-meta"><span>Current map</span><b>{mapPosition} / {mapCount}</b></div>
+        <div className="panel-header-meta"><span><Icon name="map" size={13} /> Current map</span><b>{mapPosition} / {mapCount}</b></div>
         <strong>{map.label}</strong>
         <span>{day.label}</span>
         {event?.data_status === "provisional-carry-over" && <em className="data-notice">Preview data · C107 carry-over</em>}
       </div>
-      <button onClick={() => setPanelOpen(false)} aria-label="Close booth list">×</button>
+      <button onClick={() => setPanelOpen(false)} aria-label="Close booth list" title="Close booth list"><Icon name="x" size={18} /></button>
     </div>
     <div className="panel-content" ref={contentRef}>
       {selectedMarker ? <section className="selected-booth">
-        <div className="selected-heading"><div><strong>{selectedMarker.label}</strong><span>{selectedMarker.artists.length} artist{selectedMarker.artists.length === 1 ? "" : "s"}</span></div><button onClick={() => setSelectedMarker(null)} aria-label="Close booth details">×</button></div>
+        <div className="selected-heading"><div><span className="eyebrow"><Icon name="pin" size={13} /> Selected booth</span><strong>{selectedMarker.label}</strong><span>{selectedMarker.artists.length} artist{selectedMarker.artists.length === 1 ? "" : "s"}</span></div><button onClick={() => setSelectedMarker(null)} aria-label="Close booth details" title="Clear selection"><Icon name="x" size={16} /></button></div>
         {selectedMarker.artists.map((artist) => <ArtistProfile key={artist.artist_key} artist={artist} />)}
-      </section> : <div className="empty-selection"><span className="empty-selection-icon">✦</span><strong>{markers.length ? "Choose a booth marker" : "No saved exhibitors here yet"}</strong><p>{markers.length ? "Select a marker or location below to see its details." : "Reviewed C108 locations will appear on this map when they are ready."}</p></div>}
-      <section className="marker-list"><div className="list-heading"><div><strong>{markers.length ? "Locations on this map" : "Map locations"}</strong><small>{markers.length ? "Select a booth to inspect it" : "Nothing published for this map yet"}</small></div><span>{markers.length}</span></div>
+      </section> : <div className="empty-selection"><span className="empty-selection-icon"><Icon name={markers.length ? "pin" : "map"} size={17} /></span><strong>{markers.length ? "Choose a booth marker" : "No saved exhibitors here yet"}</strong><p>{markers.length ? "Select a marker or location below to see its details." : "Reviewed C108 locations will appear on this map when they are ready."}</p></div>}
+      <section className="marker-list"><div className="list-heading"><div><div className="list-title"><Icon name="list" size={15} /><strong>{markers.length ? "Locations on this map" : "Map locations"}</strong><span className="count-badge">{markers.length}</span></div><small>{markers.length ? "Select a booth to inspect it" : "Nothing published for this map yet"}</small></div></div>
         {markers.length === 0 && <p className="muted">The official map is ready. Followed exhibitors will be added after their C108 locations are reviewed.</p>}
-        {markers.map((marker, index) => <button className={`marker-row ${selectedMarker?.id === marker.id ? "active" : ""}`} key={marker.id} onClick={() => setSelectedMarker(marker)}><span className="marker-number">{index + 1}</span><span className="marker-row-copy"><strong>{marker.label}</strong><small>{marker.artists.map((artist) => `@${artist.username}`).join(" · ")}</small></span>{marker.artists.length > 1 && <span className="count-badge">{marker.artists.length}</span>}</button>)}
+        {markers.map((marker, index) => <button className={`marker-row ${selectedMarker?.id === marker.id ? "active" : ""}`} key={marker.id} onClick={() => setSelectedMarker(marker)}><span className="marker-number">{index + 1}</span><span className="marker-row-copy"><strong>{marker.label}</strong><small>{marker.artists.map((artist) => `@${artist.username}`).join(" · ")}</small></span>{marker.artists.length > 1 && <span className="count-badge">{marker.artists.length}</span>}<Icon className="row-chevron" name="chevronRight" size={14} /></button>)}
       </section>
     </div>
   </aside>;
