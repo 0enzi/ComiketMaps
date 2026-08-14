@@ -327,8 +327,8 @@ def build_carry_over(
             })
         if locations:
             public_artists.append({
-                key: source_artist.get(key, "")
-                for key in ("artist_key", "user_id", "username", "display_name", "description", "profile_url", "avatar_url", "banner_url")
+                key: source_artist.get(key, 0 if key == "priority" else "")
+                for key in ("artist_key", "user_id", "username", "display_name", "description", "profile_url", "avatar_url", "banner_url", "priority")
             } | {"locations": locations})
 
     for booth in public_booths.values():

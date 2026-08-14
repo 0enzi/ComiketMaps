@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import * as PIXI from "pixi.js";
 import { Viewport } from "pixi-viewport";
 import { markerTableLabel } from "../data/markerLabel";
-import { MAP_MARKER_SIZE } from "../data/markerStyle";
+import { MAP_MARKER_SIZE, priorityPixiColor } from "../data/markerStyle";
 
 const PIXI_ENABLED = import.meta.env.VITE_ENABLE_PIXI === "true";
 
@@ -71,13 +71,13 @@ export function usePIXI(map, markers, onMarkerClick, onZoomChange) {
       point.eventMode = "static"; point.cursor = "pointer";
       const box = new PIXI.Graphics();
       const halfMarkerSize = MAP_MARKER_SIZE / 2;
-      box.rect(-halfMarkerSize, -halfMarkerSize, MAP_MARKER_SIZE, MAP_MARKER_SIZE).fill(0x14d8d8).stroke({ width: 1, color: 0x071016 });
+      box.rect(-halfMarkerSize, -halfMarkerSize, MAP_MARKER_SIZE, MAP_MARKER_SIZE).fill(priorityPixiColor(marker.priority)).stroke({ width: 1, color: 0x071016 });
       point.addChild(box);
       const number = new PIXI.Text({ text: markerTableLabel(marker), style: { fontFamily: "Arial", fontSize: 10, fill: 0x001010, fontWeight: "bold" } });
       number.anchor.set(0.5); point.addChild(number);
       if (marker.artists.length > 1) {
         const badgeOffset = halfMarkerSize;
-        const badge = new PIXI.Graphics(); badge.circle(badgeOffset, -badgeOffset, 6).fill(0xff8a00).stroke({ width: 1, color: 0xffffff }); point.addChild(badge);
+        const badge = new PIXI.Graphics(); badge.circle(badgeOffset, -badgeOffset, 6).fill(0x1c292d).stroke({ width: 1, color: 0xffffff }); point.addChild(badge);
         const count = new PIXI.Text({ text: String(marker.artists.length), style: { fontFamily: "Arial", fontSize: 7, fill: 0xffffff, fontWeight: "bold" } }); count.anchor.set(0.5); count.x = badgeOffset; count.y = -badgeOffset; point.addChild(count);
       }
       point.on("pointerdown", (event) => { event.stopPropagation(); onMarkerClick(marker); });

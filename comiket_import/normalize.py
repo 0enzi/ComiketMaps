@@ -45,6 +45,15 @@ def normalize_half(value: object) -> str:
     return normalized if normalized in {"a", "b", "ab"} else "unknown"
 
 
+def normalize_priority(value: object) -> int:
+    normalized = normalize_text(value).lower()
+    if normalized in {"10", "10.0", "!!"}:
+        return 10
+    if normalized in {"5", "5.0", "!"}:
+        return 5
+    return 0
+
+
 def artist_key(user_id: object, username: object) -> str:
     normalized_id = normalize_text(user_id)
     if normalized_id and normalized_id.isdigit() and normalized_id != "0":

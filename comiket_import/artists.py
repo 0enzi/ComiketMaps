@@ -14,6 +14,7 @@ from .normalize import (
     artist_key,
     normalize_direction,
     normalize_half,
+    normalize_priority,
     normalize_section,
     normalize_table,
     normalize_text,
@@ -177,6 +178,7 @@ def _parse_profile(event_id: str, event_config: EventConfig, row: Dict[str, str]
         banner_url=normalize_text(
             row.get("Profile Banner URL", row.get("banner_url", ""))
         ),
+        priority=normalize_priority(row.get("Priority", row.get("priority", ""))),
         locations=locations,
     )
 
@@ -197,6 +199,7 @@ def read_artist_csv(path: Path, event_id: str, event_config: EventConfig) -> Lis
                 for field_name in ("username", "display_name", "description", "profile_url", "avatar_url", "banner_url"):
                     if getattr(parsed, field_name) and not getattr(existing, field_name):
                         setattr(existing, field_name, getattr(parsed, field_name))
+                existing.priority = max(existing.priority, parsed.priority)
 
             row_signature = tuple(
                 normalize_text(row.get(column, ""))
@@ -243,6 +246,10 @@ def read_manual_csv(path: Path, event_id: str) -> List[ArtistRecord]:
                     username=username,
                     display_name=display_name,
                 ),
+            )
+            record.priority = max(
+                record.priority,
+                normalize_priority(row.get("priority", row.get("Priority", ""))),
             )
             location = LocationCandidate(
                 event_id=event_id,
@@ -297,4 +304,5 @@ def merge_records(
             value = getattr(correction, field_name)
             if value:
                 setattr(existing, field_name, value)
+        existing.priority = max(existing.priority, correction.priority)
     return sorted(records.values(), key=lambda record: (record.username.lower(), record.artist_key))

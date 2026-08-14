@@ -455,7 +455,7 @@ def _build_public(event_id: str, allow_unresolved: bool = False, carry_over_even
             })["artist_keys"].append(artist["artist_key"])
         if public_locations:
             public_locations.sort(key=lambda item: (item.get("day", 0), item.get("map_id", ""), item.get("booth_id", "")))
-            public_artists.append({key: artist.get(key, "") for key in ("artist_key", "user_id", "username", "display_name", "description", "profile_url", "avatar_url", "banner_url")} | {"locations": public_locations})
+            public_artists.append({key: artist.get(key, 0 if key == "priority" else "") for key in ("artist_key", "user_id", "username", "display_name", "description", "profile_url", "avatar_url", "banner_url", "priority")} | {"locations": public_locations})
     maps = event.get("maps", [])
     days = event.get("days") or [{"id": f"day-{key}", "label": f"Day {key}"} for key in sorted(event.get("day_specs", {}), key=str)]
     manifest = {

@@ -1,3 +1,5 @@
+import { normalizePriority } from "./markerStyle.js";
+
 function compareLocation(a, b) {
   const section = String(a.section ?? "").localeCompare(String(b.section ?? ""), "ja");
   if (section) return section;
@@ -29,10 +31,13 @@ export function groupMarkers({ manifest, days, booths, artists }) {
           section: booth.section,
           table: booth.table,
           half: booth.half,
+          priority: 0,
           artists: [],
         });
       }
-      markersByKey.get(key).artists.push(artist);
+      const marker = markersByKey.get(key);
+      marker.artists.push(artist);
+      marker.priority = Math.max(marker.priority, normalizePriority(artist.priority));
     }
   }
   return [...markersByKey.values()].sort((a, b) => compareLocation(a, b));

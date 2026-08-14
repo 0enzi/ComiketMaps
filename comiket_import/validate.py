@@ -99,7 +99,7 @@ def validate_public_event(path: Path) -> None:
         raise ValueError("Artist keys must be unique")
     allowed_artist_fields = {
         "artist_key", "user_id", "username", "display_name", "description",
-        "profile_url", "avatar_url", "banner_url", "locations",
+        "profile_url", "avatar_url", "banner_url", "priority", "locations",
     }
     appearance_ids = set()
     for artist in artists:
@@ -108,6 +108,8 @@ def validate_public_event(path: Path) -> None:
         private_fields = set(artist) - allowed_artist_fields
         if private_fields:
             raise ValueError(f"Private artist fields leaked: {sorted(private_fields)}")
+        if artist.get("priority", 0) not in {0, 5, 10}:
+            raise ValueError(f"Invalid artist priority: {artist.get('artist_key')}")
         for location in artist.get("locations", []):
             if set(location) != {"day", "map_id", "booth_id", "booth_code"}:
                 raise ValueError(f"Public location has unexpected/private fields: {sorted(set(location))}")

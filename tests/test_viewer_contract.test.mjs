@@ -7,7 +7,7 @@ import { calibratedC107Point, legacyPixelToOfficialPage, stablePointKey } from "
 import { groupMarkers } from "../src/data/markerGrouping.js";
 import { clampMapScale, fitMapScale } from "../src/data/mapViewport.js";
 import { markerTableLabel } from "../src/data/markerLabel.js";
-import { MAP_MARKER_SIZE } from "../src/data/markerStyle.js";
+import { MAP_MARKER_SIZE, priorityCssColor, priorityLabel } from "../src/data/markerStyle.js";
 import { latestEventEntry } from "../src/data/eventSelection.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -104,4 +104,24 @@ test("viewer groups valid co-located artists by day and booth", () => {
   assert.equal(grouped.length, 1);
   assert.equal(grouped[0].artists.length, 2);
   assert.equal(grouped[0].id, "C107:day-1:east-4-6:artist-booth");
+});
+
+test("map markers use the highest priority at a shared booth", () => {
+  const booth = { booth_id: "east-4-6:priority-booth", map_id: "east-4-6", section: "ア", table: "1", half: "ab", booth_code: "ア1ab", x: 100, y: 100 };
+  const grouped = groupMarkers({
+    manifest: { event_id: "C107" },
+    days: [{ id: "day-1", number: 1 }],
+    booths: [booth],
+    artists: [
+      { artist_key: "x:green", username: "green", priority: 0, locations: [{ day: 1, booth_id: booth.booth_id }] },
+      { artist_key: "x:yellow", username: "yellow", priority: 5, locations: [{ day: 1, booth_id: booth.booth_id }] },
+      { artist_key: "x:red", username: "red", priority: 10, locations: [{ day: 1, booth_id: booth.booth_id }] },
+    ],
+  });
+  assert.equal(grouped[0].priority, 10);
+  assert.equal(priorityCssColor(grouped[0].priority), "#ef5964");
+  assert.equal(priorityLabel(0), "0 points");
+  assert.match(viewerCss, /\.priority-0\s*\{[^}]*--priority-color:\s*var\(--priority-green\)/s);
+  assert.match(viewerCss, /\.priority-5\s*\{[^}]*--priority-color:\s*var\(--priority-yellow\)/s);
+  assert.match(viewerCss, /\.priority-10\s*\{[^}]*--priority-color:\s*var\(--priority-red\)/s);
 });

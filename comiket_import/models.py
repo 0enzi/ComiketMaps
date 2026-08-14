@@ -60,6 +60,7 @@ class ArtistRecord:
     profile_url: str = ""
     avatar_url: str = ""
     banner_url: str = ""
+    priority: int = 0
     locations: List[LocationCandidate] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:

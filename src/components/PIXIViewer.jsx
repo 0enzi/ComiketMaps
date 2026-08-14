@@ -2,6 +2,7 @@ import { usePIXI } from "../hooks/usePIXI";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { clampMapScale, fitMapScale } from "../data/mapViewport";
 import { markerTableLabel } from "../data/markerLabel";
+import { normalizePriority, priorityLabel } from "../data/markerStyle";
 
 function imageCoordinate(value, size) {
   const number = Number(value);
@@ -106,7 +107,7 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
       {!imageError ? <img src={map.asset} alt={`${map.label} map`} draggable="false" onError={() => setImageError(true)} /> : <div className="map-fallback-error">Map image could not be loaded.</div>}
       {markers.map((marker) => <button
         type="button"
-        className={`map-fallback-marker ${marker.id === selectedMarker?.id ? "selected" : ""}`}
+        className={`map-fallback-marker priority-${normalizePriority(marker.priority)} ${marker.id === selectedMarker?.id ? "selected" : ""}`}
         key={marker.id}
         style={{
           left: imageCoordinate(marker.x, imageWidth),
@@ -114,7 +115,7 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
         }}
         onPointerDown={(event) => event.stopPropagation()}
         onClick={() => onMarkerClick(marker)}
-        aria-label={`${marker.label}, table ${markerTableLabel(marker)}`}
+        aria-label={`${marker.label}, table ${markerTableLabel(marker)}, ${priorityLabel(marker.priority)}`}
         aria-pressed={marker.id === selectedMarker?.id}
       >
         <span>{markerTableLabel(marker)}</span>
