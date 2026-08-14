@@ -1,10 +1,12 @@
 import json
+import sqlite3
 import shutil
 from pathlib import Path
 
 import pytest
 
 from comiket_import.artists import event_config_from_dict, merge_records, read_artist_csv, read_manual_csv
+from comiket_import.bot_database import read_bot_database
 from comiket_import.carryover import C108_CELL_ANCHORS, build_carry_over, carry_over_map_id
 from comiket_import.models import ArtistRecord, LocationCandidate
 from comiket_import.normalize import artist_key, normalize_half, normalize_table, normalize_text
@@ -33,6 +35,47 @@ def test_nfkc_identity_and_missing_half_remains_unresolved(tmp_path: Path):
     records = read_artist_csv(csv_path, "C107", event_config_from_dict(CONFIG))
     assert records[0].locations[0].half == "unknown"
     assert records[0].locations[0].status == "needs_review"
+
+
+def test_bot_database_imports_only_exhibitors_and_deduplicates_locations(tmp_path: Path):
+    database = tmp_path / "nyaa.db"
+    connection = sqlite3.connect(database)
+    connection.executescript("""
+        CREATE TABLE analyses (
+            id INTEGER PRIMARY KEY, url TEXT, author TEXT, body TEXT,
+            is_exhibitor INTEGER, event_code TEXT, priority INTEGER
+        );
+        CREATE TABLE locations (
+            id INTEGER PRIMARY KEY, analysis_id INTEGER, day INTEGER,
+            direction TEXT, hall TEXT, section TEXT, space_no TEXT,
+            half TEXT, booth TEXT, confidence TEXT, source_text TEXT
+        );
+        INSERT INTO analyses VALUES
+            (1, 'https://x.com/Artist/status/123', 'Artist',
+             'Original Name (@Artist) on X\nProfile body', 1, 'C108', 10),
+            (2, 'https://x.com/not_an_artist', 'not_an_artist', '', 0, 'C108', 5),
+            (3, 'https://x.com/old_event', 'old_event', '', 1, 'C107', 5);
+        INSERT INTO locations VALUES
+            (1, 1, 2, '東', '７', 'Ａ', '4', 'AB', '東7-A04ab', 'high', 'source'),
+            (2, 1, 2, '東', '７', 'Ａ', '4', 'AB', '東7-A04ab', 'high', 'source');
+    """)
+    connection.commit()
+    connection.close()
+
+    records = read_bot_database(database, "C108", [{
+        "username": "artist", "user_id": "", "display_name": "Preserved Name",
+        "description": "Preserved bio", "avatar_url": "avatar.jpg",
+        "banner_url": "banner.jpg",
+    }])
+    assert len(records) == 1
+    assert records[0].username == "artist"
+    assert records[0].priority == 10
+    assert records[0].avatar_url == "avatar.jpg"
+    assert len(records[0].locations) == 1
+    location = records[0].locations[0]
+    assert (location.day, location.direction, location.hall) == (2, "East", "7")
+    assert (location.section, location.table, location.half) == ("A", "04", "ab")
+    assert location.status == "accepted"
 
 
 def test_event_conflict_and_multiple_same_day_are_reviewed(tmp_path: Path):
@@ -123,9 +166,9 @@ def test_public_c108_contract_contains_all_four_maps():
     assert "data_status" not in manifest
     artists = json.loads((root / "public/events/c108/artists.json").read_text(encoding="utf-8"))
     booths = json.loads((root / "public/events/c108/booths.json").read_text(encoding="utf-8"))
-    assert len(artists) == 19
-    assert len(booths) == 20
-    assert sum(len(artist["locations"]) for artist in artists) == 20
+    assert len(artists) == 35
+    assert len(booths) == 36
+    assert sum(len(artist["locations"]) for artist in artists) == 37
     assert all(booth["artist_keys"] for booth in booths)
     assert all(0 <= booth["x"] <= 1 and 0 <= booth["y"] <= 1 for booth in booths)
 

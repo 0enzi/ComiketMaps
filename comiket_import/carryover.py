@@ -22,7 +22,10 @@ C108_CELL_ANCHORS: Dict[Tuple[str, str, str], Tuple[float, float]] = {
     ("east-1-3", "ア", "8"): (2754.0, 1060.5),
     ("east-1-3", "ア", "17"): (2772.5, 694.0),
     ("east-1-3", "ア", "18"): (2772.5, 668.0),
+    ("east-1-3", "ア", "19"): (2773.0, 641.5),
+    ("east-1-3", "ア", "20"): (2755.0, 579.0),
     ("east-1-3", "ア", "29"): (2500.5, 451.0),
+    ("east-1-3", "ア", "48"): (1553.5, 421.0),
     ("east-1-3", "ア", "60"): (858.5, 448.5),
     ("east-1-3", "ア", "64"): (706.0, 420.0),
     ("east-1-3", "ア", "80"): (124.5, 720.5),
@@ -30,8 +33,12 @@ C108_CELL_ANCHORS: Dict[Tuple[str, str, str], Tuple[float, float]] = {
     ("east-1-3", "ア", "85"): (142.0, 980.5),
     ("east-1-3", "イ", "19"): (2687.5, 727.0),
     ("east-1-3", "キ", "9"): (2373.0, 1123.5),
+    ("east-1-3", "ウ", "15"): (2627.5, 980.0),
+    ("east-1-3", "ウ", "24"): (2627.5, 727.0),
+    ("east-1-3", "ケ", "14"): (2210.5, 980.0),
     ("east-1-3", "ク", "47"): (2284.5, 936.0),
     ("east-1-3", "ク", "48"): (2284.5, 959.0),
+    ("east-1-3", "ク", "51"): (2284.0, 1022.0),
     ("east-1-3", "ノ", "9"): (1157.0, 1086.5),
     ("east-1-3", "ノ", "30"): (1157.0, 558.25),
     ("east-1-3", "ヒ", "9"): (1004.5, 1021.5),
@@ -59,15 +66,19 @@ C108_CELL_ANCHORS: Dict[Tuple[str, str, str], Tuple[float, float]] = {
     ("east-7", "A", "9"): (1190.56, 1391.40),
     ("east-7", "A", "10"): (1207.0, 1364.0),
     ("east-7", "A", "13"): (1280.0, 1252.0),
+    ("east-7", "A", "17"): (1362.2, 1121.3),
     ("east-7", "A", "19"): (1045.5, 287.5),
     ("east-7", "A", "21"): (974.5, 287.5),
     ("east-7", "A", "23"): (694.0, 287.0),
     ("east-7", "A", "34"): (249.0, 287.0),
+    ("east-7", "B", "4"): (1342.0, 915.0),
     ("east-7", "D", "1"): (1183.5, 987.0),
     ("east-7", "E", "44"): (1072.5, 892.0),
+    ("east-7", "E", "24"): (1101.0, 379.0),
     ("east-7", "I", "48"): (709.0, 987.0),
     ("east-7", "J", "2"): (625.5, 961.0),
     ("east-7", "K", "18"): (542.0, 520.0),
+    ("east-7", "L", "45"): (427.5, 915.0),
     ("east-7", "M", "12"): (369.0, 728.0),
 
     # West 1–2.  The source export has one ``メ25`` spelling; the printed
@@ -76,6 +87,8 @@ C108_CELL_ANCHORS: Dict[Tuple[str, str, str], Tuple[float, float]] = {
     ("west-1-2", "あ", "34"): (2664.5, 505.0),
     ("west-1-2", "あ", "36"): (2664.5, 418.0),
     ("west-1-2", "あ", "38"): (2649.5, 315.0),
+    ("west-1-2", "あ", "5"): (2262.5, 1843.0),
+    ("west-1-2", "あ", "45"): (2309.0, 179.5),
     ("west-1-2", "あ", "53"): (1748.5, 179.5),
     ("west-1-2", "あ", "55"): (1620.5, 199.0),
     ("west-1-2", "あ", "57"): (1556.0, 199.0),
@@ -96,11 +109,13 @@ C108_CELL_ANCHORS: Dict[Tuple[str, str, str], Tuple[float, float]] = {
     ("west-1-2", "め", "28"): (217.5, 896.0),
     ("west-1-2", "め", "32"): (217.5, 608.5),
     ("west-1-2", "め", "47"): (663.0, 198.5),
+    ("west-1-2", "め", "72"): (815.0, 1717.0),
     ("west-1-2", "メ", "25"): (217.5, 1185.5),
 
     # South 1–2, upper perimeter of the ``a`` section.
     ("south-1-2", "a", "29"): (2033.0, 348.0),
     ("south-1-2", "a", "30"): (1736.5, 302.0),
+    ("south-1-2", "i", "11"): (1687.0, 873.5),
 }
 
 
@@ -110,7 +125,7 @@ def _canonical_table(value: Any) -> str:
     return stripped or "0"
 
 
-def _c108_anchor(map_id: str, section: Any, table: Any) -> Optional[Tuple[float, float]]:
+def c108_anchor(map_id: str, section: Any, table: Any) -> Optional[Tuple[float, float]]:
     section_text = str(section or "").strip()
     table_text = _canonical_table(table)
     direct = C108_CELL_ANCHORS.get((map_id, section_text, table_text))
@@ -121,6 +136,10 @@ def _c108_anchor(map_id: str, section: Any, table: Any) -> Optional[Tuple[float,
     if map_id == "west-1-2" and section_text in {"メ", "め"}:
         return C108_CELL_ANCHORS.get((map_id, "め", table_text))
     return None
+
+
+# Kept as an internal alias for callers from older revisions.
+_c108_anchor = c108_anchor
 
 
 def _coordinate(value: Any, size: int) -> float:

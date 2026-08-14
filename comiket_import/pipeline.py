@@ -22,7 +22,8 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from .artists import event_config_from_dict, merge_records, read_artist_csv, read_manual_csv
-from .carryover import build_carry_over
+from .bot_database import read_bot_database
+from .carryover import build_carry_over, c108_anchor, carry_over_map_id
 from .models import SCHEMA_VERSION, read_json, write_json
 from .normalize import (
     format_booth_code,
@@ -193,6 +194,94 @@ def command_import_artists(args: argparse.Namespace) -> int:
     )
     print(f"Imported {len(merged)} artist record(s), {candidates} location candidate(s)")
     print(f"Review required: {unresolved}")
+    return 0
+
+
+def _seed_bot_calibration(
+    event: Dict[str, Any], calibration: Dict[str, Any], records: List[Any]
+) -> tuple[int, List[str]]:
+    """Add deterministic C108 cell anchors for newly imported bot booths."""
+    maps = {item["map_id"]: item for item in event.get("maps", [])}
+    existing = {
+        (
+            booth.get("direction"), booth.get("hall"), booth.get("section"),
+            booth.get("table"), booth.get("half"),
+        )
+        for map_item in calibration.get("maps", [])
+        for booth in map_item.get("booths", [])
+    }
+    seeded = 0
+    missing: List[str] = []
+    for record in records:
+        for location in record.locations:
+            if location.status != "accepted":
+                continue
+            identity = (
+                location.direction, location.hall, location.section,
+                location.table, location.half,
+            )
+            if identity in existing:
+                continue
+            booth = {
+                "direction": location.direction,
+                "section": location.section,
+                "booth_code": format_booth_code(
+                    location.direction, location.section, location.table, location.half
+                ),
+            }
+            try:
+                map_id = carry_over_map_id(booth, maps.values())
+            except ValueError:
+                missing.append(location.location_key)
+                continue
+            anchor = c108_anchor(map_id, location.section, location.table)
+            map_item = maps.get(map_id, {})
+            width = int(map_item.get("width") or 0)
+            height = int(map_item.get("height") or 0)
+            if anchor is None or not width or not height:
+                missing.append(location.location_key)
+                continue
+            saved = _calibrate_booth(event, calibration, {
+                "map_id": map_id,
+                "direction": location.direction,
+                "hall": location.hall,
+                "section": location.section,
+                "table": location.table,
+                "half": location.half,
+                "x": anchor[0] / width,
+                "y": anchor[1] / height,
+            })
+            saved["confidence"] = "calibrated"
+            saved["source"] = "c108-cell-calibration"
+            existing.add(identity)
+            seeded += 1
+    return seeded, missing
+
+
+def command_import_bot(args: argparse.Namespace) -> int:
+    event = _load_event_config(args.event)
+    artist_path = event_dir(args.event) / "artists.json"
+    prior = read_json(artist_path) if artist_path.exists() else []
+    records = read_bot_database(Path(args.db), args.event, prior)
+    write_json(artist_path, [record.to_dict() for record in records])
+
+    calibration = load_calibration(WORK_ROOT, args.event)
+    seeded, missing = _seed_bot_calibration(event, calibration, records)
+    write_json(event_dir(args.event) / "calibration.json", calibration)
+
+    locations = sum(len(record.locations) for record in records)
+    unresolved = sum(
+        1 for record in records for location in record.locations
+        if location.status == "needs_review"
+    )
+    print(f"Imported {len(records)} bot exhibitor(s), {locations} booth appearance(s)")
+    print(f"Seeded {seeded} new booth calibration(s)")
+    print(f"Review required: {unresolved}")
+    if missing:
+        print(f"Missing C108 map calibration: {len(missing)}")
+        for key in missing:
+            print(f"  - {key}")
+        return 2
     return 0
 
 
@@ -531,6 +620,9 @@ def build_parser() -> argparse.ArgumentParser:
     imp = commands.add_parser("import-artists", help="import an X-following CSV")
     imp.add_argument("--event", required=True); imp.add_argument("--csv", required=True); imp.add_argument("--manual")
     imp.set_defaults(func=command_import_artists)
+    bot = commands.add_parser("import-bot", help="import reviewed exhibitors from the Nyaa bot database")
+    bot.add_argument("--event", required=True); bot.add_argument("--db", required=True)
+    bot.set_defaults(func=command_import_bot)
     review = commands.add_parser("review", help="serve the local review UI")
     review.add_argument("--event", required=True); review.add_argument("--port", type=int, default=8765)
     review.add_argument("--no-server", action="store_true"); review.add_argument("--open", action="store_true")

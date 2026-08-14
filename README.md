@@ -60,10 +60,15 @@ The normal C108 workflow is:
 
 ```sh
 python -m comiket_import init --event C108 --pdf /path/to/C108Map_all_B4.pdf
-python -m comiket_import import-artists --event C108 --csv /path/to/following.csv
+python -m comiket_import import-bot --event C108 --db /path/to/nyaa.db
 python -m comiket_import review --event C108 --open
 python -m comiket_import build --event C108
 ```
+
+`import-bot` reads SQLite in read-only mode and imports only C108 rows already
+marked as exhibitors. It also carries over any saved avatar/banner metadata and
+seeds calibrated map cells, so rerunning it safely updates priorities and new
+booth additions without duplicating artists.
 
 The review page is the authority for accepted booth locations. Unresolved artist locations and accepted locations without calibrated geometry block a normal publish build.
 
