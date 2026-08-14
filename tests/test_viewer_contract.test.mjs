@@ -5,7 +5,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { calibratedC107Point, legacyPixelToOfficialPage, stablePointKey } from "../tools/c107Geometry.mjs";
 import { groupMarkers } from "../src/data/markerGrouping.js";
-import { clampMapScale, clampMapView, fitMapScale, MAP_MAX_SCALE } from "../src/data/mapViewport.js";
+import { clampMapScale, clampMapView, fitMapScale, MAP_MAX_SCALE, MAP_MOBILE_MAX_SCALE, visibleMapRect } from "../src/data/mapViewport.js";
 import { markerTableLabel } from "../src/data/markerLabel.js";
 import { MAP_MARKER_SIZE, priorityCssColor, priorityLabel } from "../src/data/markerStyle.js";
 import { latestEventEntry } from "../src/data/eventSelection.js";
@@ -13,6 +13,8 @@ import { latestEventEntry } from "../src/data/eventSelection.js";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const viewerSource = fs.readFileSync(path.join(root, "src/components/PIXIViewer.jsx"), "utf8");
 const viewerCss = fs.readFileSync(path.join(root, "src/index.css"), "utf8");
+const mainSource = fs.readFileSync(path.join(root, "src/main.jsx"), "utf8");
+const crashBoundarySource = fs.readFileSync(path.join(root, "src/components/CrashBoundary.jsx"), "utf8");
 const manifest = JSON.parse(fs.readFileSync(path.join(root, "public/events/c107/manifest.json"), "utf8"));
 const booths = JSON.parse(fs.readFileSync(path.join(root, "public/events/c107/booths.json"), "utf8"));
 const artists = JSON.parse(fs.readFileSync(path.join(root, "public/events/c107/artists.json"), "utf8"));
@@ -20,11 +22,25 @@ const artists = JSON.parse(fs.readFileSync(path.join(root, "public/events/c107/a
 test("viewer renders compact numbered boxes without booth-code labels", () => {
   assert.match(viewerSource, /<span>\{markerTableLabel\(marker\)}<\/span>/);
   assert.doesNotMatch(viewerSource, /<em>\{marker\.label\}<\/em>/);
-  assert.doesNotMatch(viewerSource, /map-fallback-marker-layer/);
-  assert.match(viewerSource, /left: imageCoordinate\(marker\.x, imageWidth\)/);
+  assert.match(viewerSource, /<canvas ref=\{mapCanvasRef\} className="map-fallback-canvas"/);
+  assert.match(viewerSource, /visibleMapRect\(view, frame\.width, frame\.height, imageWidth, imageHeight\)/);
+  assert.doesNotMatch(viewerSource, /map-fallback-stage/);
+  assert.doesNotMatch(viewerSource, /<img src=\{map\.asset\}/);
+  assert.match(viewerSource, /left: view\.x \+ imageCoordinate\(marker\.x, imageWidth\) \* view\.scale/);
+  assert.match(viewerSource, /addEventListener\("wheel", zoomAt, \{ passive: false \}\)/);
+  assert.doesNotMatch(viewerSource, /onWheel=\{zoomAt\}/);
   assert.match(viewerCss, new RegExp(`\\.map-fallback-marker\\s*\\{[^}]*width:\\s*${MAP_MARKER_SIZE}px[^}]*height:\\s*${MAP_MARKER_SIZE}px`, "s"));
   assert.doesNotMatch(viewerCss, /\.map-fallback-marker em\s*\{/);
-  assert.doesNotMatch(viewerSource, /--marker-scale/);
+  assert.match(viewerSource, /"--marker-scale": markerScale/);
+  assert.match(viewerCss, /scale\(var\(--marker-scale\)\)/);
+  assert.doesNotMatch(viewerSource, /setView\(\(\) => \{\s*const start = pinchRef\.current/s);
+});
+
+test("mobile render failures surface diagnostics instead of an empty root", () => {
+  assert.match(mainSource, /<CrashBoundary>/);
+  assert.match(mainSource, /installGlobalDiagnostics\(\)/);
+  assert.match(crashBoundarySource, /recordDiagnostic\("react-crash"/);
+  assert.match(crashBoundarySource, /Comiket Maps crashed/);
 });
 
 test("marker labels use the printed booth table number", () => {
@@ -46,6 +62,7 @@ test("map annotations scale with the image and zoom-out stops at fit", () => {
   assert.equal(clampMapScale(0.08, fitted), fitted);
   assert.equal(clampMapScale(fitted * 2, fitted), fitted * 2);
   assert.equal(clampMapScale(99, fitted), MAP_MAX_SCALE);
+  assert.equal(clampMapScale(99, fitted, MAP_MOBILE_MAX_SCALE), MAP_MOBILE_MAX_SCALE);
   assert.equal(MAP_MARKER_SIZE * fitted, MAP_MARKER_SIZE * (900 / 1720));
 });
 
@@ -57,6 +74,22 @@ test("map panning stays inside the visible image bounds", () => {
   const centered = clampMapView({ scale: 0.2, x: -50, y: 999 }, 900, 900, 2867, 2024);
   assert.equal(centered.x, (900 - 2867 * 0.2) / 2);
   assert.equal(centered.y, (900 - 2024 * 0.2) / 2);
+});
+
+test("fallback canvas draws only the visible source crop", () => {
+  assert.deepEqual(
+    visibleMapRect({ scale: 4, x: -5000, y: -2000 }, 390, 355, 2867, 2024),
+    {
+      sourceX: 1250,
+      sourceY: 500,
+      sourceWidth: 97.5,
+      sourceHeight: 88.75,
+      destinationX: 0,
+      destinationY: 0,
+      destinationWidth: 390,
+      destinationHeight: 355,
+    },
+  );
 });
 
 test("C107 legacy coordinates go through the explicit page transform", () => {

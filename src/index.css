@@ -31,13 +31,15 @@ button { -webkit-tap-highlight-color: transparent; }
 
 .map-fallback { overflow: hidden; cursor: grab; touch-action: none; user-select: none; background: radial-gradient(circle at 35% 20%, #364247 0, #232c30 38%, #151b1f 100%); }
 .map-fallback:active { cursor: grabbing; }
-.map-fallback-stage { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
-.map-fallback-stage img { display: block; width: 100%; height: 100%; object-fit: fill; pointer-events: none; user-select: none; }
-.map-fallback-error { display: grid; place-items: center; width: 100%; height: 100%; color: #fff; background: #242a2f; font-size: 14px; }
+.map-fallback-canvas, .map-fallback-markers { position: absolute; inset: 0; width: 100%; height: 100%; }
+.map-fallback-canvas { display: block; pointer-events: none; }
+.map-fallback-markers { overflow: hidden; pointer-events: none; }
+.map-fallback-error { position: absolute; inset: 0; z-index: 4; display: grid; place-items: center; color: #fff; background: #242a2f; font-size: 14px; }
 .priority-0 { --priority-color: var(--priority-green); }
 .priority-5 { --priority-color: var(--priority-yellow); }
 .priority-10 { --priority-color: var(--priority-red); }
-.map-fallback-marker { position: absolute; width: 18px; height: 18px; padding: 0; border: 1px solid #0b1113; border-radius: 5px; transform: translate(-50%, -50%); transform-origin: center; color: #071315; background: var(--priority-color); box-shadow: 0 2px 7px #0008; cursor: pointer; transition: filter .15s ease, box-shadow .15s ease; }
+.map-fallback-marker { position: absolute; width: 18px; height: 18px; padding: 0; border: 1px solid #0b1113; border-radius: 5px; transform: translate(-50%, -50%) scale(var(--marker-scale)); transform-origin: center; color: #071315; background: var(--priority-color); box-shadow: 0 2px 7px #0008; cursor: pointer; pointer-events: auto; transition: filter .15s ease, box-shadow .15s ease; }
+.map-fallback-marker::before { content: ""; position: absolute; inset: -7px; }
 .map-fallback-marker:hover, .map-fallback-marker:focus-visible, .map-fallback-marker.selected { z-index: 3; outline: 3px solid #fff; outline-offset: 2px; filter: brightness(1.12); box-shadow: 0 3px 10px #000a; }
 .map-fallback-marker span { display: grid; place-items: center; width: 100%; height: 100%; font-size: 9px; font-weight: 800; }
 .map-fallback-marker b { position: absolute; top: -4px; right: -4px; display: grid; place-items: center; min-width: 10px; height: 10px; padding: 0 1px; border: 1px solid #fff; border-radius: 99px; color: #fff; background: #1c292d; font-size: 6px; line-height: 1; }
@@ -135,6 +137,19 @@ button { -webkit-tap-highlight-color: transparent; }
 .app-state.error { display: flex; flex-direction: column; gap: 10px; }
 .app-state button { padding: 9px 16px; border: 0; border-radius: 8px; color: #071315; background: #22d3d6; cursor: pointer; }
 .inline-error { position: fixed; right: 12px; bottom: 12px; left: 12px; z-index: 30; padding: 10px; border-radius: 8px; color: #fff; background: #7e2626; font-size: 12px; }
+.diagnostics-toggle { position: fixed; right: 8px; bottom: 8px; z-index: 90; padding: 7px 9px; border: 1px solid #78f4ef66; border-radius: 9px; color: #bafffb; background: #102326f2; font-size: 10px; font-weight: 800; }
+.diagnostics-panel { position: fixed; inset: auto 8px 8px 8px; z-index: 91; display: flex; flex-direction: column; max-height: 60vh; padding: 9px; border: 1px solid #78f4ef66; border-radius: 12px; color: #eff; background: #071013fa; box-shadow: 0 12px 40px #000b; }
+.diagnostics-panel header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.diagnostics-panel header div { display: flex; gap: 4px; }
+.diagnostics-panel button, .crash-screen button { padding: 6px 8px; border: 1px solid #ffffff2b; border-radius: 7px; color: #eff; background: #ffffff12; }
+.diagnostics-panel small { margin-bottom: 5px; color: #ffd67a; }
+.diagnostics-panel textarea, .crash-screen textarea { width: 100%; min-height: 180px; flex: 1; resize: none; border: 1px solid #ffffff22; border-radius: 7px; color: #c8ffff; background: #020708; font: 9px/1.35 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.crash-screen { display: flex; flex-direction: column; gap: 10px; width: 100%; height: 100%; padding: max(24px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom)); color: #fff; background: #18090b; }
+.crash-screen h1, .crash-screen p { margin: 0; }
+.crash-screen h1 { color: #ff7780; font-size: 22px; }
+.crash-screen p { font-size: 12px; line-height: 1.45; }
+.crash-screen textarea { min-height: 240px; }
+.crash-screen button { align-self: flex-start; }
 
 @media (max-width: 900px) {
   .viewer-shell.panel-open { right: 0; bottom: min(56vh, 620px); }

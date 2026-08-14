@@ -1,4 +1,5 @@
 export const MAP_MAX_SCALE = 4;
+export const MAP_MOBILE_MAX_SCALE = 4;
 
 export function fitMapScale(frameWidth, frameHeight, imageWidth, imageHeight) {
   const values = [frameWidth, frameHeight, imageWidth, imageHeight].map(Number);
@@ -27,5 +28,30 @@ export function clampMapView(view, frameWidth, frameHeight, imageWidth, imageHei
     scale,
     x: clampPosition(view.x, width, sourceWidth * scale),
     y: clampPosition(view.y, height, sourceHeight * scale),
+  };
+}
+
+export function visibleMapRect(view, frameWidth, frameHeight, imageWidth, imageHeight) {
+  const values = [view?.scale, view?.x, view?.y, frameWidth, frameHeight, imageWidth, imageHeight].map(Number);
+  if (values.some((value) => !Number.isFinite(value)) || values[0] <= 0 || values.slice(3).some((value) => value <= 0)) return null;
+
+  const [scale, x, y, width, height, sourceWidth, sourceHeight] = values;
+  const destinationX = Math.max(0, x);
+  const destinationY = Math.max(0, y);
+  const destinationRight = Math.min(width, x + sourceWidth * scale);
+  const destinationBottom = Math.min(height, y + sourceHeight * scale);
+  const destinationWidth = destinationRight - destinationX;
+  const destinationHeight = destinationBottom - destinationY;
+  if (destinationWidth <= 0 || destinationHeight <= 0) return null;
+
+  return {
+    sourceX: (destinationX - x) / scale,
+    sourceY: (destinationY - y) / scale,
+    sourceWidth: destinationWidth / scale,
+    sourceHeight: destinationHeight / scale,
+    destinationX,
+    destinationY,
+    destinationWidth,
+    destinationHeight,
   };
 }

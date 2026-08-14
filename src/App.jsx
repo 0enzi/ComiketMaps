@@ -3,6 +3,7 @@ import TopBar from "./components/TopBar";
 import InfoBoard from "./components/InfoBoard";
 import PIXIViewer from "./components/PIXIViewer";
 import Icon from "./components/Icon";
+import DiagnosticsPanel from "./components/DiagnosticsPanel";
 import { loadEvent, loadEventIndex, markersFor } from "./data/eventData";
 import { latestEventEntry } from "./data/eventSelection";
 import "./index.css";
@@ -20,6 +21,7 @@ function App() {
   const [error, setError] = useState(null);
   const [offlineReady, setOfflineReady] = useState(false);
   const [offlineHelpOpen, setOfflineHelpOpen] = useState(false);
+  const diagnosticsEnabled = new URLSearchParams(window.location.search).has("debug");
 
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return undefined;
@@ -99,6 +101,7 @@ function App() {
           <small>The reviewed maps and event data are bundled for offline use. Social-media profile images may still need a connection.</small>
         </section>
       </div>}
+      {diagnosticsEnabled && <DiagnosticsPanel />}
     </main>
   );
 }

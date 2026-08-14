@@ -1,8 +1,9 @@
 import { usePIXI } from "../hooks/usePIXI";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { clampMapScale, clampMapView, fitMapScale } from "../data/mapViewport";
+import { clampMapScale, clampMapView, fitMapScale, MAP_MAX_SCALE, MAP_MOBILE_MAX_SCALE, visibleMapRect } from "../data/mapViewport";
 import { markerTableLabel } from "../data/markerLabel";
 import { normalizePriority, priorityLabel } from "../data/markerStyle";
+import { recordDiagnostic } from "../data/diagnostics";
 
 function imageCoordinate(value, size) {
   const number = Number(value);
@@ -11,14 +12,22 @@ function imageCoordinate(value, size) {
 
 function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange }) {
   const frameRef = useRef(null);
+  const mapCanvasRef = useRef(null);
+  const imageRef = useRef(null);
+  const canvasErrorRef = useRef("");
   const dragRef = useRef(null);
   const pointersRef = useRef(new Map());
   const pinchRef = useRef(null);
   const [frame, setFrame] = useState({ width: 0, height: 0 });
   const [view, setView] = useState({ scale: 1, x: 0, y: 0 });
-  const [imageError, setImageError] = useState(false);
+  const [imageState, setImageState] = useState({ asset: "", status: "loading" });
   const imageWidth = Number(map?.width) || 1720;
   const imageHeight = Number(map?.height) || 1215;
+  const touchDevice = typeof navigator !== "undefined" && navigator.maxTouchPoints > 0;
+  const maximumScale = touchDevice ? MAP_MOBILE_MAX_SCALE : MAP_MAX_SCALE;
+  const imageReady = imageState.asset === map.asset && imageState.status === "ready";
+  const imageError = imageState.asset === map.asset && imageState.status === "error";
+  const markerScale = Math.min(1, Math.max(0.55, Math.sqrt(view.scale)));
 
   const fitImage = useCallback(() => {
     if (!frameRef.current) return;
@@ -39,14 +48,96 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
 
   useEffect(() => { onZoomChange?.(view.scale); }, [onZoomChange, view.scale]);
 
+  useEffect(() => {
+    let cancelled = false;
+    const asset = map.asset;
+    const image = new Image();
+    image.decoding = "async";
+    image.onload = () => {
+      if (cancelled) return;
+      imageRef.current = image;
+      setImageState({ asset, status: "ready" });
+    };
+    image.onerror = () => {
+      if (cancelled) return;
+      imageRef.current = null;
+      setImageState({ asset, status: "error" });
+    };
+    image.src = asset;
+    return () => {
+      cancelled = true;
+      image.onload = null;
+      image.onerror = null;
+      if (imageRef.current === image) imageRef.current = null;
+    };
+  }, [map.asset]);
+
+  useEffect(() => {
+    const canvas = mapCanvasRef.current;
+    if (!canvas || !frame.width || !frame.height) return undefined;
+
+    const animationFrame = window.requestAnimationFrame(() => {
+      const pixelRatio = Math.min(2, Math.max(1, Number(window.devicePixelRatio) || 1));
+      const canvasWidth = Math.max(1, Math.round(frame.width * pixelRatio));
+      const canvasHeight = Math.max(1, Math.round(frame.height * pixelRatio));
+      if (canvas.width !== canvasWidth) canvas.width = canvasWidth;
+      if (canvas.height !== canvasHeight) canvas.height = canvasHeight;
+
+      const context = canvas.getContext("2d", { alpha: true, desynchronized: true });
+      if (!context) return;
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      context.clearRect(0, 0, frame.width, frame.height);
+
+      const image = imageRef.current;
+      const visible = imageReady ? visibleMapRect(view, frame.width, frame.height, imageWidth, imageHeight) : null;
+      if (!image || !visible) return;
+
+      const sourceScaleX = image.naturalWidth / imageWidth;
+      const sourceScaleY = image.naturalHeight / imageHeight;
+      context.imageSmoothingEnabled = true;
+      context.imageSmoothingQuality = "high";
+      try {
+        context.drawImage(
+          image,
+          visible.sourceX * sourceScaleX,
+          visible.sourceY * sourceScaleY,
+          visible.sourceWidth * sourceScaleX,
+          visible.sourceHeight * sourceScaleY,
+          visible.destinationX,
+          visible.destinationY,
+          visible.destinationWidth,
+          visible.destinationHeight,
+        );
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        if (canvasErrorRef.current !== message) {
+          canvasErrorRef.current = message;
+          recordDiagnostic("canvas-draw-error", { message, visible, canvasWidth, canvasHeight });
+        }
+      }
+    });
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [frame.height, frame.width, imageHeight, imageReady, imageWidth, view]);
+
   const startDrag = (event) => {
     if (event.button !== 0) return;
     event.currentTarget.setPointerCapture?.(event.pointerId);
     pointersRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointersRef.current.size === 2) {
       const [first, second] = [...pointersRef.current.values()];
-      const distance = Math.hypot(second.x - first.x, second.y - first.y);
-      pinchRef.current = { distance, view };
+      const distance = Math.max(1, Math.hypot(second.x - first.x, second.y - first.y));
+      pinchRef.current = { distance, view, latestScale: view.scale, lastScaleBucket: Math.floor(view.scale * 2) };
+      recordDiagnostic("pinch-start", {
+        distance,
+        scale: view.scale,
+        frameWidth: frame.width,
+        frameHeight: frame.height,
+        canvasWidth: mapCanvasRef.current?.width,
+        canvasHeight: mapCanvasRef.current?.height,
+        imageWidth,
+        imageHeight,
+      });
       dragRef.current = null;
       return;
     }
@@ -56,23 +147,29 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
     if (pointersRef.current.has(event.pointerId)) {
       pointersRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
     }
-    if (pointersRef.current.size >= 2 && pinchRef.current && frameRef.current) {
+    const start = pinchRef.current;
+    const frameElement = frameRef.current;
+    if (pointersRef.current.size >= 2 && start && frameElement) {
       const [first, second] = [...pointersRef.current.values()];
       const distance = Math.max(1, Math.hypot(second.x - first.x, second.y - first.y));
       const midpoint = { x: (first.x + second.x) / 2, y: (first.y + second.y) / 2 };
-      const rect = frameRef.current.getBoundingClientRect();
+      const rect = frameElement.getBoundingClientRect();
       const cursorX = midpoint.x - rect.left;
       const cursorY = midpoint.y - rect.top;
-      setView(() => {
-        const start = pinchRef.current;
-        const minimumScale = fitMapScale(frameRef.current.clientWidth, frameRef.current.clientHeight, imageWidth, imageHeight);
-        const nextScale = clampMapScale(start.view.scale * distance / start.distance, minimumScale);
-        return clampMapView({
-          scale: nextScale,
-          x: cursorX - (cursorX - start.view.x) * (nextScale / start.view.scale),
-          y: cursorY - (cursorY - start.view.y) * (nextScale / start.view.scale),
-        }, frameRef.current.clientWidth, frameRef.current.clientHeight, imageWidth, imageHeight);
-      });
+      const minimumScale = fitMapScale(frameElement.clientWidth, frameElement.clientHeight, imageWidth, imageHeight);
+      const nextScale = clampMapScale(start.view.scale * distance / start.distance, minimumScale, maximumScale);
+      const nextView = clampMapView({
+        scale: nextScale,
+        x: cursorX - (cursorX - start.view.x) * (nextScale / start.view.scale),
+        y: cursorY - (cursorY - start.view.y) * (nextScale / start.view.scale),
+      }, frameElement.clientWidth, frameElement.clientHeight, imageWidth, imageHeight);
+      start.latestScale = nextScale;
+      const scaleBucket = Math.floor(nextScale * 2);
+      if (scaleBucket !== start.lastScaleBucket) {
+        start.lastScaleBucket = scaleBucket;
+        recordDiagnostic("pinch-scale", { scale: nextScale, x: nextView.x, y: nextView.y, distance, pointerCount: pointersRef.current.size });
+      }
+      setView(nextView);
       return;
     }
     if (!dragRef.current) return;
@@ -80,18 +177,22 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
     setView((current) => clampMapView({ ...current, x: drag.viewX + event.clientX - drag.x, y: drag.viewY + event.clientY - drag.y }, frameRef.current.clientWidth, frameRef.current.clientHeight, imageWidth, imageHeight));
   };
   const stopDrag = (event) => {
+    const endingPinch = pinchRef.current;
     pointersRef.current.delete(event.pointerId);
-    if (pointersRef.current.size < 2) pinchRef.current = null;
+    if (pointersRef.current.size < 2) {
+      pinchRef.current = null;
+      if (endingPinch) recordDiagnostic("pinch-end", { event: event.type, scale: endingPinch.latestScale, remainingPointers: pointersRef.current.size });
+    }
     dragRef.current = null;
   };
-  const zoomAt = (event) => {
+  const zoomAt = useCallback((event) => {
     event.preventDefault();
     const rect = frameRef.current?.getBoundingClientRect();
     if (!rect) return;
     const factor = event.deltaY < 0 ? 1.15 : 0.87;
     setView((current) => {
       const minimumScale = fitMapScale(frameRef.current.clientWidth, frameRef.current.clientHeight, imageWidth, imageHeight);
-      const nextScale = clampMapScale(current.scale * factor, minimumScale);
+      const nextScale = clampMapScale(current.scale * factor, minimumScale, maximumScale);
       const cursorX = event.clientX - rect.left;
       const cursorY = event.clientY - rect.top;
       return clampMapView({
@@ -100,18 +201,26 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
         y: cursorY - (cursorY - current.y) * (nextScale / current.scale),
       }, frameRef.current.clientWidth, frameRef.current.clientHeight, imageWidth, imageHeight);
     });
-  };
+  }, [imageHeight, imageWidth, maximumScale]);
 
-  return <div className="map-fallback" ref={frameRef} onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={stopDrag} onPointerCancel={stopDrag} onWheel={zoomAt}>
-    <div className="map-fallback-stage" style={{ width: imageWidth, height: imageHeight, transform: `translate(${view.x}px, ${view.y}px) scale(${view.scale})` }}>
-      {!imageError ? <img src={map.asset} alt={`${map.label} map`} draggable="false" onError={() => setImageError(true)} /> : <div className="map-fallback-error">Map image could not be loaded.</div>}
+  useEffect(() => {
+    const frameElement = frameRef.current;
+    if (!frameElement) return undefined;
+    frameElement.addEventListener("wheel", zoomAt, { passive: false });
+    return () => frameElement.removeEventListener("wheel", zoomAt);
+  }, [zoomAt]);
+
+  return <div className="map-fallback" ref={frameRef} onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={stopDrag} onPointerCancel={stopDrag}>
+    <canvas ref={mapCanvasRef} className="map-fallback-canvas" role="img" aria-label={`${map.label} map`} />
+    <div className="map-fallback-markers" aria-hidden="false">
       {markers.map((marker) => <button
         type="button"
         className={`map-fallback-marker priority-${normalizePriority(marker.priority)} ${marker.id === selectedMarker?.id ? "selected" : ""}`}
         key={marker.id}
         style={{
-          left: imageCoordinate(marker.x, imageWidth),
-          top: imageCoordinate(marker.y, imageHeight),
+          left: view.x + imageCoordinate(marker.x, imageWidth) * view.scale,
+          top: view.y + imageCoordinate(marker.y, imageHeight) * view.scale,
+          "--marker-scale": markerScale,
         }}
         onPointerDown={(event) => event.stopPropagation()}
         onClick={() => onMarkerClick(marker)}
@@ -122,8 +231,9 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
         {marker.artists.length > 1 && <b>{marker.artists.length}</b>}
       </button>)}
     </div>
-    <div className="map-fallback-hint">Drag to pan · scroll to zoom</div>
-    {!frame.width && <div className="map-loading">Loading {map.label}…</div>}
+    {imageError && <div className="map-fallback-error">Map image could not be loaded.</div>}
+    <div className="map-fallback-hint">{touchDevice ? "Drag to pan · pinch to zoom" : "Drag to pan · scroll to zoom"}</div>
+    {(!frame.width || (!imageReady && !imageError)) && <div className="map-loading">Loading {map.label}…</div>}
   </div>;
 }
 
