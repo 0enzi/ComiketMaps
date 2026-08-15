@@ -43,6 +43,8 @@ button { -webkit-tap-highlight-color: transparent; }
 .map-fallback-marker:hover, .map-fallback-marker:focus-visible, .map-fallback-marker.selected { z-index: 3; outline: 3px solid #fff; outline-offset: 2px; filter: brightness(1.12); box-shadow: 0 3px 10px #000a; }
 .map-fallback-marker span { display: grid; place-items: center; width: 100%; height: 100%; font-size: 9px; font-weight: 800; }
 .map-fallback-marker b { position: absolute; top: -4px; right: -4px; display: grid; place-items: center; min-width: 10px; height: 10px; padding: 0 1px; border: 1px solid #fff; border-radius: 99px; color: #fff; background: #1c292d; font-size: 6px; line-height: 1; }
+.map-fallback-marker.done { opacity: .62; filter: saturate(.5); }
+.map-fallback-marker.done i { position: absolute; right: -6px; bottom: -6px; display: grid; place-items: center; width: 12px; height: 12px; border: 1px solid #0b1113; border-radius: 99px; color: #071315; background: #8fffc2; font-size: 9px; font-style: normal; font-weight: 900; line-height: 1; }
 .map-fallback-hint { position: absolute; left: 14px; bottom: 14px; display: inline-flex; align-items: center; padding: 6px 9px; border: 1px solid #ffffff24; border-radius: 999px; color: #d6e0e2; background: #101519d9; box-shadow: 0 8px 24px #0003; font-size: 10px; pointer-events: none; }
 
 .top-bar { position: fixed; inset: 0 0 auto 0; display: flex; align-items: flex-start; gap: 14px; min-height: 0; padding: 12px 16px 19px; z-index: 10; pointer-events: none; transition: right .22s ease; background: linear-gradient(180deg, #080b0de8 0%, #080b0d9c 62%, transparent 100%); }
@@ -80,6 +82,8 @@ button { -webkit-tap-highlight-color: transparent; }
 .panel-header-meta b { color: #829296; font-size: 10px; font-weight: 700; }
 .panel-header button, .selected-heading button { display: grid; place-items: center; flex: 0 0 auto; width: 32px; height: 32px; border: 1px solid #ffffff24; border-radius: 10px; color: #e5edef; background: #ffffff0e; cursor: pointer; }
 .panel-header button:hover, .panel-header button:focus-visible, .selected-heading button:hover, .selected-heading button:focus-visible { border-color: #ffffff38; background: #ffffff1c; }
+.selected-heading .done-button { display: inline-flex; align-items: center; gap: 4px; width: auto; padding: 0 8px; color: #c5d1d3; font-size: 10px; font-weight: 800; }
+.selected-heading .done-button.is-done { border-color: #8fffc277; color: #071315; background: #8fffc2; }
 .panel-content { flex: 1; overflow: auto; padding: 11px; scrollbar-color: #3b4a50 transparent; }
 .empty-selection, .selected-booth, .marker-list { margin-bottom: 10px; border: 1px solid #ffffff14; border-radius: 16px; background: #ffffff08; box-shadow: 0 8px 24px #0002; }
 .empty-selection { display: grid; gap: 6px; padding: 16px; color: #99a7ad; text-align: left; font-size: 11px; line-height: 1.45; }
@@ -88,6 +92,7 @@ button { -webkit-tap-highlight-color: transparent; }
 .empty-selection p { margin: 0; }
 .selected-heading, .list-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px; border-bottom: 1px solid #ffffff12; }
 .selected-heading > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.selected-actions, .list-heading-actions { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
 .selected-heading strong { overflow: hidden; font-size: 18px; letter-spacing: -.03em; text-overflow: ellipsis; white-space: nowrap; }
 .selected-heading span:not(.eyebrow), .list-heading small { color: #91a0a6; font-size: 10px; }
 .eyebrow { display: inline-flex; align-items: center; gap: 4px; color: var(--accent) !important; font-size: 9px !important; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
@@ -99,6 +104,8 @@ button { -webkit-tap-highlight-color: transparent; }
 .list-title .count-badge { margin-left: auto; }
 .priority-legend { display: flex; align-items: center; gap: 7px; align-self: flex-start; padding-top: 2px; color: #a9b7ba; font-size: 9px; font-weight: 750; white-space: nowrap; }
 .priority-legend span { display: inline-flex; align-items: center; gap: 3px; }
+.clear-done-button { display: inline-flex; align-items: center; gap: 3px; padding: 4px 6px; border: 1px solid #8fffc244; border-radius: 7px; color: #9fffc8; background: #8fffc212; font-size: 9px; font-weight: 800; cursor: pointer; }
+.clear-done-button:hover, .clear-done-button:focus-visible { border-color: #8fffc288; background: #8fffc222; }
 .priority-dot { display: inline-block; width: 7px; height: 7px; border-radius: 99px; background: var(--priority-color); box-shadow: 0 0 0 1px #ffffff45; }
 .artist-profile { padding: 12px; border-bottom: 1px solid #ffffff12; }
 .artist-profile:last-child { border-bottom: 0; }
@@ -113,10 +120,13 @@ button { -webkit-tap-highlight-color: transparent; }
 .marker-row { display: flex; align-items: center; gap: 9px; width: 100%; padding: 9px 11px; border: 0; border-bottom: 1px solid #ffffff0c; color: #f6f7f9; background: transparent; text-align: left; cursor: pointer; }
 .marker-row:last-child { border-bottom: 0; }
 .marker-row:hover, .marker-row.active { background: #22d3d614; }
+.marker-row.done { color: #a6b3b5; background: #8fffc20b; }
+.marker-row.done .marker-number { opacity: .62; }
 .marker-number { display: grid; place-items: center; flex: 0 0 27px; width: 27px; height: 27px; border: 1px solid #ffffff66; border-radius: 8px; color: #071315; background: var(--priority-color); font-size: 11px; font-weight: 850; transition: filter .15s ease; }
 .marker-row-copy { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
 .marker-row-copy strong { font-size: 12px; }
 .marker-row-copy small { overflow: hidden; color: #9aa8ad; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.done-label { display: inline-flex; align-items: center; gap: 2px; color: #8fffc2; font-size: 9px; font-weight: 850; }
 .count-badge { display: grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 99px; color: #fff; background: #1c292d; font-size: 9px; font-weight: 850; }
 .row-chevron { margin-left: 1px; color: #72878c; }
 .muted { padding: 13px; color: #93a0a5; font-size: 11px; line-height: 1.45; }

@@ -10,7 +10,7 @@ function imageCoordinate(value, size) {
   return number >= 0 && number <= 1 ? number * size : number;
 }
 
-function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange }) {
+function MapFallback({ map, markers, doneMarkerIds, selectedMarker, onMarkerClick, onZoomChange }) {
   const frameRef = useRef(null);
   const mapCanvasRef = useRef(null);
   const imageRef = useRef(null);
@@ -215,7 +215,7 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
     <div className="map-fallback-markers" aria-hidden="false">
       {markers.map((marker) => <button
         type="button"
-        className={`map-fallback-marker priority-${normalizePriority(marker.priority)} ${marker.id === selectedMarker?.id ? "selected" : ""}`}
+        className={`map-fallback-marker priority-${normalizePriority(marker.priority)} ${marker.id === selectedMarker?.id ? "selected" : ""} ${doneMarkerIds.has(marker.id) ? "done" : ""}`}
         key={marker.id}
         style={{
           left: view.x + imageCoordinate(marker.x, imageWidth) * view.scale,
@@ -224,10 +224,11 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
         }}
         onPointerDown={(event) => event.stopPropagation()}
         onClick={() => onMarkerClick(marker)}
-        aria-label={`${marker.label}, table ${markerTableLabel(marker)}, ${priorityLabel(marker.priority)}`}
+        aria-label={`${marker.label}, table ${markerTableLabel(marker)}, ${priorityLabel(marker.priority)}${doneMarkerIds.has(marker.id) ? ", done" : ""}`}
         aria-pressed={marker.id === selectedMarker?.id}
       >
         <span>{markerTableLabel(marker)}</span>
+        {doneMarkerIds.has(marker.id) && <i aria-hidden="true">✓</i>}
         {marker.artists.length > 1 && <b>{marker.artists.length}</b>}
       </button>)}
     </div>
@@ -237,11 +238,11 @@ function MapFallback({ map, markers, selectedMarker, onMarkerClick, onZoomChange
   </div>;
 }
 
-export default function PIXIViewer({ map, markers, selectedMarker, panelOpen, dayLabel, onMarkerClick, onZoomChange, isLoading }) {
-  const { canvasRef, loadError, pixiReady, rendererFailed } = usePIXI(map, markers, onMarkerClick, onZoomChange);
+export default function PIXIViewer({ map, markers, doneMarkerIds, selectedMarker, panelOpen, dayLabel, onMarkerClick, onZoomChange, isLoading }) {
+  const { canvasRef, loadError, pixiReady, rendererFailed } = usePIXI(map, markers, doneMarkerIds, onMarkerClick, onZoomChange);
   const showFallback = rendererFailed || !pixiReady || Boolean(loadError);
   return <div className={`viewer-shell ${panelOpen ? "panel-open" : "panel-closed"}`}>
-    {showFallback && <MapFallback map={map} markers={markers} selectedMarker={selectedMarker} onMarkerClick={onMarkerClick} onZoomChange={onZoomChange} />}
+    {showFallback && <MapFallback map={map} markers={markers} doneMarkerIds={doneMarkerIds} selectedMarker={selectedMarker} onMarkerClick={onMarkerClick} onZoomChange={onZoomChange} />}
     <canvas ref={canvasRef} className={showFallback ? "pixi-canvas is-hidden" : "pixi-canvas"} />
     {isLoading && !showFallback && <div className="map-loading">Loading {dayLabel}…</div>}
     {loadError && <div className="map-error-toast"><span>Interactive renderer unavailable; map remains usable.</span></div>}

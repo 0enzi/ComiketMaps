@@ -1,5 +1,6 @@
 const paths = {
   calendar: <><rect x="3" y="4.5" width="18" height="16" rx="2.5" /><path d="M7 2.5v4M17 2.5v4M3 9h18" /></>,
+  check: <path d="m5 12.5 4.2 4.2L19 7" />,
   chevronLeft: <path d="m14.5 5-7 7 7 7" />,
   chevronRight: <path d="m9.5 5 7 7-7 7" />,
   download: <><path d="M12 3v11" /><path d="m7.5 10.5 4.5 4.5 4.5-4.5M5 20.5h14" /></>,

@@ -14,7 +14,7 @@ function imageCoordinate(value, size) {
   return number >= 0 && number <= 1 ? number * size : number;
 }
 
-export function usePIXI(map, markers, onMarkerClick, onZoomChange) {
+export function usePIXI(map, markers, doneMarkerIds, onMarkerClick, onZoomChange) {
   const canvasRef = useRef(null);
   const appRef = useRef(null);
   const viewportRef = useRef(null);
@@ -70,16 +70,21 @@ export function usePIXI(map, markers, onMarkerClick, onZoomChange) {
     const left = sprite.x - sprite.width / 2;
     const top = sprite.y - sprite.height / 2;
     markers.forEach((marker) => {
+      const done = doneMarkerIds.has(marker.id);
       const point = new PIXI.Container();
       point.x = left + imageCoordinate(marker.x, imageWidth) * (sprite.width / imageWidth);
       point.y = top + imageCoordinate(marker.y, imageHeight) * (sprite.height / imageHeight);
       point.eventMode = "static"; point.cursor = "pointer";
       const box = new PIXI.Graphics();
       const halfMarkerSize = MAP_MARKER_SIZE / 2;
-      box.rect(-halfMarkerSize, -halfMarkerSize, MAP_MARKER_SIZE, MAP_MARKER_SIZE).fill(priorityPixiColor(marker.priority)).stroke({ width: 1, color: 0x071016 });
+      box.rect(-halfMarkerSize, -halfMarkerSize, MAP_MARKER_SIZE, MAP_MARKER_SIZE).fill({ color: priorityPixiColor(marker.priority), alpha: done ? 0.45 : 1 }).stroke({ width: done ? 2 : 1, color: done ? 0x8fffc2 : 0x071016 });
       point.addChild(box);
       const number = new PIXI.Text({ text: markerTableLabel(marker), style: { fontFamily: "Arial", fontSize: 10, fill: 0x001010, fontWeight: "bold" } });
       number.anchor.set(0.5); point.addChild(number);
+      if (done) {
+        const check = new PIXI.Text({ text: "✓", style: { fontFamily: "Arial", fontSize: 8, fill: 0x071315, fontWeight: "bold" } });
+        check.anchor.set(0.5); check.x = halfMarkerSize - 1; check.y = -halfMarkerSize + 1; point.addChild(check);
+      }
       if (marker.artists.length > 1) {
         const badgeOffset = halfMarkerSize;
         const badge = new PIXI.Graphics(); badge.circle(badgeOffset, -badgeOffset, 6).fill(0x1c292d).stroke({ width: 1, color: 0xffffff }); point.addChild(badge);
@@ -90,7 +95,7 @@ export function usePIXI(map, markers, onMarkerClick, onZoomChange) {
     });
     viewport.addChild(container);
     setPixiReady(true);
-  }, [clearWorld, map, markers, onMarkerClick, setZoom]);
+  }, [clearWorld, doneMarkerIds, map, markers, onMarkerClick, setZoom]);
 
   useEffect(() => {
     if (!PIXI_ENABLED) {

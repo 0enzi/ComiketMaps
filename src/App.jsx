@@ -8,6 +8,20 @@ import { loadEvent, loadEventIndex, markersFor } from "./data/eventData";
 import { latestEventEntry } from "./data/eventSelection";
 import "./index.css";
 
+function doneStorageKey(eventId) {
+  return `comiket-maps:done:${String(eventId || "").toLowerCase()}`;
+}
+
+function readDoneMarkerIds(eventId) {
+  if (!eventId || typeof window === "undefined") return [];
+  try {
+    const value = JSON.parse(window.localStorage.getItem(doneStorageKey(eventId)) || "[]");
+    return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
 function App() {
   const [eventIndex, setEventIndex] = useState(null);
   const [event, setEvent] = useState(null);
@@ -21,7 +35,22 @@ function App() {
   const [error, setError] = useState(null);
   const [offlineReady, setOfflineReady] = useState(false);
   const [offlineHelpOpen, setOfflineHelpOpen] = useState(false);
+  const [doneState, setDoneState] = useState({ eventId: "", ids: [] });
   const diagnosticsEnabled = new URLSearchParams(window.location.search).has("debug");
+
+  useEffect(() => {
+    if (!eventId) return;
+    setDoneState({ eventId, ids: readDoneMarkerIds(eventId) });
+  }, [eventId]);
+
+  useEffect(() => {
+    if (!eventId || doneState.eventId !== eventId || typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(doneStorageKey(eventId), JSON.stringify(doneState.ids));
+    } catch {
+      // A blocked/private storage context should not prevent map use.
+    }
+  }, [doneState, eventId]);
 
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return undefined;
@@ -56,6 +85,26 @@ function App() {
   const activeMap = event?.maps.find((map) => map.map_id === mapId) || event?.maps[0];
   const activeMapIndex = Math.max(0, event?.maps.findIndex((map) => map.map_id === activeMap?.map_id) ?? 0);
   const markers = useMemo(() => markersFor(event, activeDay?.id, activeMap?.map_id), [event, activeDay?.id, activeMap?.map_id]);
+  const doneMarkerIds = useMemo(
+    () => new Set(doneState.eventId === eventId ? doneState.ids : []),
+    [doneState, eventId],
+  );
+
+  const toggleDone = (markerId) => {
+    if (!eventId || !markerId) return;
+    setDoneState((current) => {
+      if (current.eventId !== eventId) return current;
+      const ids = current.ids.includes(markerId)
+        ? current.ids.filter((id) => id !== markerId)
+        : [...current.ids, markerId];
+      return { eventId, ids };
+    });
+  };
+
+  const clearDone = () => {
+    if (!eventId) return;
+    setDoneState((current) => current.eventId === eventId ? { eventId, ids: [] } : current);
+  };
 
   const changeEvent = async (nextEventId) => {
     const entry = eventIndex?.events.find((item) => item.event_id === nextEventId);
@@ -80,12 +129,12 @@ function App() {
 
   return (
     <main className="app-shell">
-      <PIXIViewer map={activeMap} markers={markers} selectedMarker={selectedMarker} panelOpen={panelOpen} dayLabel={activeDay.label} onMarkerClick={setSelectedMarker} onZoomChange={setZoomLevel} isLoading={loading} />
+      <PIXIViewer map={activeMap} markers={markers} doneMarkerIds={doneMarkerIds} selectedMarker={selectedMarker} panelOpen={panelOpen} dayLabel={activeDay.label} onMarkerClick={setSelectedMarker} onZoomChange={setZoomLevel} isLoading={loading} />
       <TopBar
         event={event} eventEntries={eventIndex?.events || []} eventId={eventId} dayId={activeDay.id} mapId={activeMap.map_id} panelOpen={panelOpen}
         zoomLevel={zoomLevel} offlineReady={offlineReady} onOfflineHelp={() => setOfflineHelpOpen(true)} setEventId={changeEvent} setDayId={changeDay} setMapId={(id) => { setMapId(id); setSelectedMarker(null); }}
       />
-      <InfoBoard event={event} day={activeDay} map={activeMap} mapPosition={activeMapIndex + 1} mapCount={event.maps.length} markers={markers} selectedMarker={selectedMarker} panelOpen={panelOpen} setPanelOpen={setPanelOpen} setSelectedMarker={setSelectedMarker} />
+      <InfoBoard event={event} day={activeDay} map={activeMap} mapPosition={activeMapIndex + 1} mapCount={event.maps.length} markers={markers} doneMarkerIds={doneMarkerIds} selectedMarker={selectedMarker} panelOpen={panelOpen} setPanelOpen={setPanelOpen} setSelectedMarker={setSelectedMarker} onToggleDone={toggleDone} onClearDone={clearDone} />
       {error && <div className="inline-error">{error}</div>}
       {offlineHelpOpen && <div className="offline-help-backdrop" role="presentation" onClick={() => setOfflineHelpOpen(false)}>
         <section className="offline-help" role="dialog" aria-modal="true" aria-labelledby="offline-help-title" onClick={(event) => event.stopPropagation()}>
