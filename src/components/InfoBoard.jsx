@@ -20,6 +20,11 @@ export default function InfoBoard({ event, day, map, mapPosition, mapCount, mark
   const doneCount = markers.filter((marker) => doneMarkerIds.has(marker.id)).length;
   const totalDone = doneMarkerIds.size;
   const selectedDone = selectedMarker ? doneMarkerIds.has(selectedMarker.id) : false;
+  const toggleSelectedDone = () => {
+    if (!selectedMarker) return;
+    if (!selectedDone && !window.confirm(`Are you sure you want to mark ${selectedMarker.label} as done?`)) return;
+    onToggleDone(selectedMarker.id);
+  };
   useEffect(() => {
     if (selectedMarker && selectedMarker !== previous.current && !panelOpen) setPanelOpen(true);
     if (selectedMarker && contentRef.current) contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
@@ -39,7 +44,7 @@ export default function InfoBoard({ event, day, map, mapPosition, mapCount, mark
     </div>
     <div className="panel-content" ref={contentRef}>
       {selectedMarker ? <section className="selected-booth">
-        <div className="selected-heading"><div><span className="eyebrow"><Icon name="pin" size={13} /> Selected booth</span><strong>{selectedMarker.label}</strong><span>{selectedMarker.artists.length} artist{selectedMarker.artists.length === 1 ? "" : "s"}</span><span className={`priority-pill priority-${normalizePriority(selectedMarker.priority)}`}>{priorityLabel(selectedMarker.priority)}</span></div><div className="selected-actions"><button className={`done-button ${selectedDone ? "is-done" : ""}`} onClick={() => onToggleDone(selectedMarker.id)} aria-pressed={selectedDone} title={selectedDone ? "Mark booth as not done" : "Mark booth as done"}><Icon name="check" size={15} />{selectedDone ? "Done" : "Mark done"}</button><button onClick={() => setSelectedMarker(null)} aria-label="Close booth details" title="Clear selection"><Icon name="x" size={16} /></button></div></div>
+        <div className="selected-heading"><div><span className="eyebrow"><Icon name="pin" size={13} /> Selected booth</span><strong>{selectedMarker.label}</strong><span>{selectedMarker.artists.length} artist{selectedMarker.artists.length === 1 ? "" : "s"}</span><span className={`priority-pill priority-${normalizePriority(selectedMarker.priority)}`}>{priorityLabel(selectedMarker.priority)}</span></div><div className="selected-actions"><button className={`done-button ${selectedDone ? "is-done" : ""}`} onClick={toggleSelectedDone} aria-pressed={selectedDone} title={selectedDone ? "Mark booth as not done" : "Mark booth as done"}><Icon name="check" size={15} />{selectedDone ? "Done" : "Mark as done"}</button><button onClick={() => setSelectedMarker(null)} aria-label="Close booth details" title="Clear selection"><Icon name="x" size={16} /></button></div></div>
         {selectedMarker.artists.map((artist) => <ArtistProfile key={artist.artist_key} artist={artist} />)}
       </section> : <div className="empty-selection"><span className="empty-selection-icon"><Icon name={markers.length ? "pin" : "map"} size={17} /></span><strong>{markers.length ? "Choose a booth marker" : "No saved exhibitors here yet"}</strong><p>{markers.length ? "Select a marker or location below to see its details." : "Reviewed C108 locations will appear on this map when they are ready."}</p></div>}
       <section className="marker-list"><div className="list-heading"><div><div className="list-title"><Icon name="list" size={15} /><strong>{markers.length ? "Locations on this map" : "Map locations"}</strong><span className="count-badge">{markers.length}</span></div><small>{markers.length ? `${doneCount}/${markers.length} done · select a booth to inspect it` : "Nothing published for this map yet"}</small></div><div className="list-heading-actions"><div className="priority-legend" aria-label="Marker priority colors" title="Marker priority colors"><span><i className="priority-dot priority-0" />0</span><span><i className="priority-dot priority-5" />5</span><span><i className="priority-dot priority-10" />10</span></div>{totalDone > 0 && <button className="clear-done-button" onClick={onClearDone} title="Clear all done markers for this event"><Icon name="x" size={12} />Clear done</button>}</div></div>
