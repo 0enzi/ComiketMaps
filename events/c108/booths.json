@@ -65,22 +65,6 @@
     ]
   },
   {
-    "booth_id": "east-1-3:east:1:ア:20:a",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": "1",
-    "section": "ア",
-    "table": "20",
-    "half": "a",
-    "booth_code": "東ア20a",
-    "x": 0.9609347750261598,
-    "y": 0.28606719367588934,
-    "bounds": null,
-    "artist_keys": [
-      "xhandle:amedamacon"
-    ]
-  },
-  {
     "booth_id": "east-1-3:east:1:ア:29:ab",
     "map_id": "east-1-3",
     "direction": "East",
@@ -145,10 +129,10 @@
     ]
   },
   {
-    "booth_id": "east-1-3:east:1:ウ:24:ab",
+    "booth_id": "east-1-3:east:unknown-hall:ウ:24:ab",
     "map_id": "east-1-3",
     "direction": "East",
-    "hall": "1",
+    "hall": null,
     "section": "ウ",
     "table": "24",
     "half": "ab",
@@ -206,38 +190,6 @@
     "bounds": null,
     "artist_keys": [
       "xhandle:mikaze_oto"
-    ]
-  },
-  {
-    "booth_id": "east-1-3:east:1:ク:51:a",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": "1",
-    "section": "ク",
-    "table": "51",
-    "half": "a",
-    "booth_code": "東ク51a",
-    "x": 0.7966515521450994,
-    "y": 0.5049407114624506,
-    "bounds": null,
-    "artist_keys": [
-      "xhandle:ame_usari"
-    ]
-  },
-  {
-    "booth_id": "east-1-3:east:1:ケ:14:a",
-    "map_id": "east-1-3",
-    "direction": "East",
-    "hall": "1",
-    "section": "ケ",
-    "table": "14",
-    "half": "a",
-    "booth_code": "東ケ14a",
-    "x": 0.7710149982560167,
-    "y": 0.4841897233201581,
-    "bounds": null,
-    "artist_keys": [
-      "xhandle:my_106820"
     ]
   },
   {
@@ -369,10 +321,10 @@
     ]
   },
   {
-    "booth_id": "east-7:east:7:A:34:ab",
+    "booth_id": "east-7:east:unknown-hall:A:34:ab",
     "map_id": "east-7",
     "direction": "East",
-    "hall": "7",
+    "hall": null,
     "section": "A",
     "table": "34",
     "half": "ab",
@@ -385,10 +337,10 @@
     ]
   },
   {
-    "booth_id": "east-7:east:7:B:04:ab",
+    "booth_id": "east-7:east:unknown-hall:B:04:ab",
     "map_id": "east-7",
     "direction": "East",
-    "hall": "7",
+    "hall": null,
     "section": "B",
     "table": "04",
     "half": "ab",
@@ -513,22 +465,6 @@
     ]
   },
   {
-    "booth_id": "west-1-2:west:2:あ:45:a",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": "2",
-    "section": "あ",
-    "table": "45",
-    "half": "a",
-    "booth_code": "西あ45a",
-    "x": 0.8053714684339031,
-    "y": 0.08868577075098814,
-    "bounds": null,
-    "artist_keys": [
-      "xhandle:amedamacon"
-    ]
-  },
-  {
     "booth_id": "west-1-2:west:unknown-hall:あ:55:ab",
     "map_id": "west-1-2",
     "direction": "West",
@@ -545,22 +481,6 @@
     ]
   },
   {
-    "booth_id": "west-1-2:west:unknown-hall:へ:04:a",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "へ",
-    "table": "04",
-    "half": "a",
-    "booth_code": "西へ04a",
-    "x": 0.2471224276246948,
-    "y": 0.8364624505928854,
-    "bounds": null,
-    "artist_keys": [
-      "xhandle:mikaze_oto"
-    ]
-  },
-  {
     "booth_id": "west-1-2:west:1:め:26:ab",
     "map_id": "west-1-2",
     "direction": "West",
@@ -574,22 +494,6 @@
     "bounds": null,
     "artist_keys": [
       "xhandle:40hara"
-    ]
-  },
-  {
-    "booth_id": "west-1-2:west:unknown-hall:め:72:b",
-    "map_id": "west-1-2",
-    "direction": "West",
-    "hall": null,
-    "section": "め",
-    "table": "72",
-    "half": "b",
-    "booth_code": "西め72b",
-    "x": 0.28426927101499827,
-    "y": 0.8483201581027668,
-    "bounds": null,
-    "artist_keys": [
-      "xhandle:_smiledumpling"
     ]
   }
 ]

@@ -32,71 +32,8 @@
       {
         "day": 2,
         "map_id": "east-7",
-        "booth_id": "east-7:east:7:B:04:ab",
+        "booth_id": "east-7:east:unknown-hall:B:04:ab",
         "booth_code": "東B04ab"
-      }
-    ]
-  },
-  {
-    "artist_key": "xhandle:_smiledumpling",
-    "user_id": "",
-    "username": "_smiledumpling",
-    "display_name": "笑笑餃子🥟西め72b",
-    "description": "C108 Sat West me72b Gyoza Club Branch",
-    "profile_url": "https://x.com/_smiledumpling",
-    "avatar_url": "",
-    "banner_url": "",
-    "priority": 10,
-    "locations": [
-      {
-        "day": 1,
-        "map_id": "west-1-2",
-        "booth_id": "west-1-2:west:unknown-hall:め:72:b",
-        "booth_code": "西め72b"
-      }
-    ]
-  },
-  {
-    "artist_key": "xhandle:ame_usari",
-    "user_id": "",
-    "username": "ame_usari",
-    "display_name": "うさり🌙日-東ク51a",
-    "description": "C108 Day 2 East Hall ク51a Cream anmichu",
-    "profile_url": "https://x.com/ame_usari",
-    "avatar_url": "",
-    "banner_url": "",
-    "priority": 5,
-    "locations": [
-      {
-        "day": 2,
-        "map_id": "east-1-3",
-        "booth_id": "east-1-3:east:1:ク:51:a",
-        "booth_code": "東ク51a"
-      }
-    ]
-  },
-  {
-    "artist_key": "xhandle:amedamacon",
-    "user_id": "",
-    "username": "amedamacon",
-    "display_name": "飴玉コン🍬",
-    "description": "C108 Day 1 West 2 Hall a45a\nC108 Day 2 East 1 Hall A20a",
-    "profile_url": "https://x.com/amedamacon",
-    "avatar_url": "",
-    "banner_url": "",
-    "priority": 5,
-    "locations": [
-      {
-        "day": 1,
-        "map_id": "west-1-2",
-        "booth_id": "west-1-2:west:2:あ:45:a",
-        "booth_code": "西あ45a"
-      },
-      {
-        "day": 2,
-        "map_id": "east-1-3",
-        "booth_id": "east-1-3:east:1:ア:20:a",
-        "booth_code": "東ア20a"
       }
     ]
   },
@@ -166,7 +103,7 @@
     "profile_url": "https://x.com/haru_hololive",
     "avatar_url": "",
     "banner_url": "",
-    "priority": 0,
+    "priority": 5,
     "locations": [
       {
         "day": 1,
@@ -180,7 +117,7 @@
     "artist_key": "xhandle:hasuroot",
     "user_id": "",
     "username": "hasuroot",
-    "display_name": "はすね🎀2日目東1 ア19ab🎀カフェトリカルカフェCF9/30まで",
+    "display_name": "はすね🎀2日目東1 ア19ab🎀カフェトリカルカフェC...",
     "description": "8/16 Sun Day 2 East 1 A19ab Hasuneya",
     "profile_url": "https://x.com/hasuroot",
     "avatar_url": "",
@@ -261,7 +198,7 @@
     "profile_url": "https://x.com/itiri234r",
     "avatar_url": "",
     "banner_url": "",
-    "priority": 0,
+    "priority": 5,
     "locations": [
       {
         "day": 2,
@@ -318,7 +255,7 @@
     "profile_url": "https://x.com/kinnotamadx",
     "avatar_url": "",
     "banner_url": "",
-    "priority": 5,
+    "priority": 10,
     "locations": [
       {
         "day": 2,
@@ -351,19 +288,13 @@
     "artist_key": "xhandle:mikaze_oto",
     "user_id": "",
     "username": "mikaze_oto",
-    "display_name": "緑風マルト🌿C108 1日目西へ04a / 2日目東ク48b",
+    "display_name": "緑風マルト🌿C108 2日目 東ク48b",
     "description": "🌿Illustrator. たまに漫画\n🌿Vtuber Design / CD jacket / SDVX etc...\n🌿FANBOX : https://t.co/pCsrvSGc19\n🌿Fantia : https://t.co/2z2juW2BVJ",
     "profile_url": "https://x.com/mikaze_oto",
     "avatar_url": "",
     "banner_url": "",
     "priority": 10,
     "locations": [
-      {
-        "day": 1,
-        "map_id": "west-1-2",
-        "booth_id": "west-1-2:west:unknown-hall:へ:04:a",
-        "booth_code": "西へ04a"
-      },
       {
         "day": 2,
         "map_id": "east-1-3",
@@ -400,7 +331,7 @@
     "profile_url": "https://x.com/mimmi_sak",
     "avatar_url": "",
     "banner_url": "",
-    "priority": 0,
+    "priority": 5,
     "locations": [
       {
         "day": 1,
@@ -419,12 +350,12 @@
     "profile_url": "https://x.com/momoco_haru",
     "avatar_url": "",
     "banner_url": "",
-    "priority": 5,
+    "priority": 10,
     "locations": [
       {
         "day": 1,
         "map_id": "east-7",
-        "booth_id": "east-7:east:7:A:34:ab",
+        "booth_id": "east-7:east:unknown-hall:A:34:ab",
         "booth_code": "東A34ab"
       }
     ]
@@ -445,25 +376,6 @@
         "map_id": "east-7",
         "booth_id": "east-7:east:7:L:45:b",
         "booth_code": "東L45b"
-      }
-    ]
-  },
-  {
-    "artist_key": "xhandle:my_106820",
-    "user_id": "",
-    "username": "my_106820",
-    "display_name": "ミヤ@C108(土)東1\"ケ\"14a",
-    "description": "絵描きサークル「ガラクタファクトリー」当主 FANBOX https://t.co/AczbBH4pTE Fantia https://t.co/WNNyMpXTXZ 肌面積が多い女の子を描くのが すき",
-    "profile_url": "https://x.com/my_106820",
-    "avatar_url": "",
-    "banner_url": "",
-    "priority": 0,
-    "locations": [
-      {
-        "day": 1,
-        "map_id": "east-1-3",
-        "booth_id": "east-1-3:east:1:ケ:14:a",
-        "booth_code": "東ケ14a"
       }
     ]
   },
@@ -671,7 +583,7 @@
       {
         "day": 2,
         "map_id": "east-1-3",
-        "booth_id": "east-1-3:east:1:ウ:24:ab",
+        "booth_id": "east-1-3:east:unknown-hall:ウ:24:ab",
         "booth_code": "東ウ24ab"
       }
     ]
