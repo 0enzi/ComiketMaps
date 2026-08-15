@@ -281,7 +281,9 @@ def command_import_bot(args: argparse.Namespace) -> int:
         print(f"Missing C108 map calibration: {len(missing)}")
         for key in missing:
             print(f"  - {key}")
-        return 2
+        if not args.allow_missing_calibration:
+            return 2
+        print("Continuing with uncalibrated locations omitted from the public build")
     return 0
 
 
@@ -454,7 +456,12 @@ def command_review(args: argparse.Namespace) -> int:
     return 0
 
 
-def _build_public(event_id: str, allow_unresolved: bool = False, carry_over_event: Optional[str] = None) -> Dict[str, Any]:
+def _build_public(
+    event_id: str,
+    allow_unresolved: bool = False,
+    carry_over_event: Optional[str] = None,
+    allow_missing_calibration: bool = False,
+) -> Dict[str, Any]:
     event = _load_event_config(event_id)
     calibration = load_calibration(WORK_ROOT, event_id)
     if carry_over_event:
@@ -500,6 +507,7 @@ def _build_public(event_id: str, allow_unresolved: bool = False, carry_over_even
         (booth.get("direction"), booth.get("hall"), booth.get("section"), booth.get("table"), booth.get("half")): booth
         for booth in geometries
     }
+    skipped_missing_calibration = 0
     if not carry_over_event:
         public_artists = []
         public_booths = {}
@@ -513,8 +521,9 @@ def _build_public(event_id: str, allow_unresolved: bool = False, carry_over_even
             key = (location.get("direction"), location.get("hall"), location.get("section"), location.get("table"), location.get("half"))
             geometry = by_key.get(key)
             if geometry is None:
-                if not allow_unresolved:
+                if not allow_missing_calibration:
                     raise RuntimeError(f"No calibrated booth geometry for {location.get('location_key')}")
+                skipped_missing_calibration += 1
                 continue
             booth_id = geometry["booth_id"]
             booth_code = format_booth_code(
@@ -576,6 +585,8 @@ def _build_public(event_id: str, allow_unresolved: bool = False, carry_over_even
     events = {item["event_id"]: item for item in existing.get("events", [])}
     events[event_id] = {"event_id": event_id, "name": manifest["name"], "manifest": f"events/{event_id.lower()}/manifest.json"}
     write_json(index_path, {"schema_version": SCHEMA_VERSION, "events": [events[key] for key in sorted(events)]})
+    if skipped_missing_calibration:
+        print(f"Skipped {skipped_missing_calibration} accepted location(s) without calibrated booth geometry")
     return manifest
 
 
@@ -605,7 +616,12 @@ def _build_map_assets(event: Dict[str, Any], source_dir: Path, output_dir: Path)
 
 
 def command_build(args: argparse.Namespace) -> int:
-    manifest = _build_public(args.event, args.allow_unresolved, args.carry_over_event)
+    manifest = _build_public(
+        args.event,
+        args.allow_unresolved,
+        args.carry_over_event,
+        args.allow_missing_calibration,
+    )
     print(f"Built public event {manifest['event_id']} at {PUBLIC_ROOT / args.event.lower()}")
     return 0
 
@@ -622,13 +638,24 @@ def build_parser() -> argparse.ArgumentParser:
     imp.set_defaults(func=command_import_artists)
     bot = commands.add_parser("import-bot", help="import reviewed exhibitors from the Nyaa bot database")
     bot.add_argument("--event", required=True); bot.add_argument("--db", required=True)
+    bot.add_argument(
+        "--allow-missing-calibration",
+        action="store_true",
+        help="continue when accepted locations lack calibrated map geometry",
+    )
     bot.set_defaults(func=command_import_bot)
     review = commands.add_parser("review", help="serve the local review UI")
     review.add_argument("--event", required=True); review.add_argument("--port", type=int, default=8765)
     review.add_argument("--no-server", action="store_true"); review.add_argument("--open", action="store_true")
     review.set_defaults(func=command_review)
     build = commands.add_parser("build", help="validate and build public event JSON")
-    build.add_argument("--event", required=True); build.add_argument("--allow-unresolved", action="store_true")
+    build.add_argument("--event", required=True)
+    build.add_argument("--allow-unresolved", action="store_true")
+    build.add_argument(
+        "--allow-missing-calibration",
+        action="store_true",
+        help="skip accepted locations that do not have calibrated map geometry",
+    )
     build.add_argument("--carry-over-event", help="explicitly seed this event from a previous public event as provisional data")
     build.set_defaults(func=command_build)
     return parser

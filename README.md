@@ -70,7 +70,7 @@ marked as exhibitors. It also carries over any saved avatar/banner metadata and
 seeds calibrated map cells, so rerunning it safely updates priorities and new
 booth additions without duplicating artists.
 
-The review page is the authority for accepted booth locations. Unresolved artist locations and accepted locations without calibrated geometry block a normal publish build.
+The review page is the authority for accepted booth locations. Unresolved artist locations and accepted locations without calibrated geometry block a normal publish build. The automatic bot sync uses `--allow-missing-calibration` so calibrated booths can publish while uncalibrated booths are omitted until their map points are reviewed.
 
 Python 3.10+ and Poppler (`pdfinfo`, `pdftoppm`) are required. Optional OCR, PDF, review, and validation extras are documented in `pyproject.toml`.
 
